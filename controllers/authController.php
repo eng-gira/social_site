@@ -9,7 +9,7 @@
 
         public function logIn()
         {
-            //POST REQUEST
+            
         }
 
         public function newUser()

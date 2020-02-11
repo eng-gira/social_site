@@ -21,6 +21,9 @@
 
     //AUTO LOAD
     spl_autoload_register('spl_autoload', false);
-
+?>
+    <link rel="stylesheet" href="/ekom/inc/css/styles.css">
+    <div id="test1"> Test1 </div>
+<?php
     new Application;
 ?>

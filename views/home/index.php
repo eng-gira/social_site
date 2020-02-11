@@ -2,8 +2,7 @@
     <head> <title> Home | Ekom </title> </head>
     <body>
         <div id = "nav">
-            <a href="auth/reg"> Register </a>
-            <a href="auth/logIn"> Log In </a>
+            <a href="auth/reg"> Register </a>  |  <a href="auth/logIn"> Log In </a>
         </div>
         <h1> Index View </h1>
         <h3> Available Data: </h3>

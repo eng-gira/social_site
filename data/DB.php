@@ -2,14 +2,14 @@
 
     class DB
     {
-        private $host = "localhost";
-        private $user = "root";
-        private $pw = "";
-        private $DB = "ekom_db";
+        private static $host = "localhost";
+        private static $user = "root";
+        private static $pw = "";
+        private static $DB = "ekom_db";
 
-        protected function connect()
+        protected static function connect()
         {
-            $conn = new mysqli($host, $user, $pw, $DB);
+            $conn = new mysqli(self::$host, self::$user, self::$pw, self::$DB);
             
             return $conn;
         }

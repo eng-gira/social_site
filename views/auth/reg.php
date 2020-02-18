@@ -1,28 +1,29 @@
 <?php
     if(strlen($this->getData()['note']) > 0)
     {
-        $note=md5($this->getData()['note']);
+        echo "IN<br>";
+        $note=$this->getData()['note'];
         $err_msg='';
         $return_nothing=false;
 
-        switch($note)
+        if($note==md5('err_em_unm'))
         {
-            case 'err_em_unm':
-                $err_msg="Username AND Email already exist!";
-            break;
-            
-            case 'err_em':
-                $err_msg="Email already exists!";
-            break;
-
-            case 'err_unm':
-                $err_msg="Username already exists!";
-            break;
-
-            default:
-                $return_nothing=true;
+            $err_msg.="Username AND Email already exist!";
         }
-
+        else if($note==md5("err_em"))
+        {
+            $err_msg.="Email already exists!";   
+        }
+        else if($note==md5("err_unm"))
+        {
+            echo "Sure<br>";
+            $err_msg.="Username already exists!";
+        }
+        else
+        {
+            $return_nothing=true;
+        }
+        
         if(!$return_nothing)
         {
             //style: color = red;

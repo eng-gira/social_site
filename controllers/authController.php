@@ -18,10 +18,10 @@
            
             $username= htmlspecialchars($_POST['username']);
             $email= htmlspecialchars($_POST['email']);
-            $password= $_POST['pw'];
+            $password= md5($_POST['pw']);
             
             //check if username and/or email already exist
-            if(User::findUserByEmail($email) || User::findUserByUsername($usenrname))
+            if(User::findUserByEmail($email) || User::findUserByUsername($username))
             {                
                 if(!User::findUserByUsername($username))
                 {

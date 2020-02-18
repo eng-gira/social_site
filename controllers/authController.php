@@ -61,7 +61,7 @@
         public function auth_home($unm='')
         {
             //don't encode parameter here to avoid confusing errors
-            new view('auth' . DIRECTORY_SEPARATOR . 'auth_home', ['$unm' => $unm]);
+            new view('auth' . DIRECTORY_SEPARATOR . 'auth_home', ['unm' => $unm]);
         }
     }
 

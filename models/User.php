@@ -29,6 +29,8 @@
                 $stmt->bind_param("s", $email);
                 if($stmt->execute())
                 {
+                    $stmt->store_result();
+
                     if($stmt->num_rows!=0) return true;
                 }
                 else{
@@ -48,13 +50,18 @@
 
             if($stmt=$myCon->prepare($sql))
             {
+                echo "inside... <br>";
                 $stmt->bind_param("s", $username);
                 if($stmt->execute())
                 {
-                    if($stmt->num_rows != 0) return true;
+                    echo "executed...<br>";
+                    $stmt->store_result();
+
+                    if($stmt->num_rows != 0) {echo "username exists <br>"; return true;}
                 }
-                else {echo "Couldn't execute<br>"; return false;}
+                else {echo "Couldn't execute method: findUserByUsername<br>"; return false;}
             }
+            echo "username doesn't exist<br>";
             return false;
         }
 

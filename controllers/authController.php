@@ -21,21 +21,35 @@
             $password= $_POST['pw'];
             
             //check if username and/or email already exist
-            if(User::findUserByEmail($email))
-            {
-                echo "Email exists<br>";
-                return false;
-            }
-            if(User::findUserByUsername($username))
-            {
-                echo "Username exists<br>";
-                return false;
-            }
+            if(User::findUserByEmail($email) || User::findUserByUsername($usenrname))
+            {                
+                if(!User::findUserByUsername($username))
+                {
+                    $err_em=md5("err_em"); //basic encryption
+                    header("Location: auth_home?note=".$err_em);
 
+                    return false; //safety
+                }
+                else if(!User::findUserByEmail($email))
+                {
+                    $err_unm=md5("err_unm"); //basic encryption
+                    header("Location: auth_home?note=".$err_unm);
+
+                    return false; //safety
+                }
+
+                $err_em_unm = md5("err_em_unm"); //basic encryption
+
+                header("Location: auth_home?note=".$err_em_unm);
+
+                return false;
+            }
             
             if(User::newUser($username, $email, $password))
             {
-                header("Location: auth_home");
+                $encd_username=md5($username); //basic encryption
+
+                header("Location: auth_home?unm=".$encd_username);
             }
 
             return "Failed";

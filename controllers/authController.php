@@ -26,21 +26,21 @@
                 if(!User::findUserByUsername($username))
                 {
                     $err_em=md5("err_em"); //basic encryption
-                    header("Location: auth_home?note=".$err_em);
+                    header("Location: reg?note=".$err_em);
 
                     return false; //safety
                 }
                 else if(!User::findUserByEmail($email))
                 {
                     $err_unm=md5("err_unm"); //basic encryption
-                    header("Location: auth_home?note=".$err_unm);
+                    header("Location: reg?note=".$err_unm);
 
                     return false; //safety
                 }
 
                 $err_em_unm = md5("err_em_unm"); //basic encryption
 
-                header("Location: auth_home?note=".$err_em_unm);
+                header("Location: reg?note=".$err_em_unm);
 
                 return false;
             }

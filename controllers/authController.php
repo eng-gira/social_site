@@ -2,9 +2,9 @@
 
     class authController
     {
-        public function reg()
+        public function reg($note='')
         {
-            new view('auth' . DIRECTORY_SEPARATOR . 'reg');
+            new view('auth' . DIRECTORY_SEPARATOR . 'reg', ['note' => $note]);
         }
 
         public function logIn()
@@ -26,21 +26,21 @@
                 if(!User::findUserByUsername($username))
                 {
                     $err_em=md5("err_em"); //basic encryption
-                    header("Location: reg?note=".$err_em);
+                    header("Location: reg/".$err_em);
 
                     return false; //safety
                 }
                 else if(!User::findUserByEmail($email))
                 {
                     $err_unm=md5("err_unm"); //basic encryption
-                    header("Location: reg?note=".$err_unm);
+                    header("Location: reg/".$err_unm);
 
                     return false; //safety
                 }
 
                 $err_em_unm = md5("err_em_unm"); //basic encryption
 
-                header("Location: reg?note=".$err_em_unm);
+                header("Location: reg/".$err_em_unm);
 
                 return false;
             }
@@ -49,7 +49,7 @@
             {
                 $encd_username=md5($username); //basic encryption
 
-                header("Location: auth_home?unm=".$encd_username);
+                header("Location: auth_home/".$encd_username);
             }
 
             return "Failed";
@@ -60,9 +60,10 @@
 
         }
 
-        public function auth_home()
+        public function auth_home($u_nm='')
         {
-            new view('auth' . DIRECTORY_SEPARATOR . 'auth_home');
+            //don't encode parameter here to avoid confusing errors
+            new view('auth' . DIRECTORY_SEPARATOR . 'auth_home', ['$u_nm' => $u_nm]);
         }
     }
 

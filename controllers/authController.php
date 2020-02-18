@@ -47,9 +47,7 @@
             
             if(User::newUser($username, $email, $password))
             {
-                $encd_username=md5($username); //basic encryption
-
-                header("Location: auth_home/".$encd_username);
+                header("Location: auth_home/".$username);
             }
 
             return "Failed";

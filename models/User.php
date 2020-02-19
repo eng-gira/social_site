@@ -56,14 +56,46 @@
                 {
                     echo "executed...<br>";
                     $stmt->store_result();
-
-                    if($stmt->num_rows != 0) {echo "username exists <br>"; return true;}
+                    if($stmt->num_rows != 0) {
+                        $stmt->bind_result($id); 
+                        while ($stmt->fetch()) {
+                            echo "username exists with id: ". $id . "<br>";
+                            $stmt->close();
+                            return $id;
+                        }
+                    }
                 }
-                else {echo "Couldn't execute method: findUserByUsername<br>"; return false;}
+                else {echo "Couldn't execute method: findUserByUsername<br>"; $stmt->close(); return -1;}
             }
             echo "username doesn't exist<br>";
-            return false;
+            $stmt->close();
+            return -1;
         }
 
+        public static function auth($username, $pw)
+        {
+            $id = self::findUserByUsername($username);
+            if($id > -1)
+            {
+                $myCon = self::connect();
+                $sql = "SELECT pw FROM users WHERE id = " . intval($id); //no need for prepared statements here
+                $result = $myCon->query($sql);
+                if($result->num_rows!=0)
+                {   
+                    while($row = $result->fetch_assoc()) {
+                        if($row['pw']==$pw)
+                        {
+                            echo "Authenticated <br>";
+                            return true;
+                        }
+                    }
+                }
+                else {
+                    echo "NO SUCH USER! <br>";
+                    return false;
+                }
+            }
+            return false;
+        }
     }
 ?>

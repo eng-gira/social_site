@@ -1,4 +1,5 @@
 <?php
+    $note='';
     if(strlen($this->getData()['note']) > 0)
     {
         echo "IN<br>";
@@ -30,9 +31,11 @@
             echo "<h4>". $err_msg ."</h4><br>";   
         }
     }
+
+    $link= strlen($note)>0 ? '../insertUser' : 'insertUser';
 ?>
 
-<form action = "insertUser" method="POST">
+<form action = <?php echo $link; ?> method="POST">
     Username: <input type="text" name="username" required/>
     Email: <input type="text" name="email" required/>
     Password: <input type="password" name="pw" required/>

@@ -1,14 +1,17 @@
 <?php
+    session_start();
 
     class authController
     {
         public function reg($note='')
         {
+            if(isset($_SESSION['username'])) return false;
             new view('auth' . DIRECTORY_SEPARATOR . 'reg', ['note' => $note]);
         }
 
         public function logIn($note='')
         {
+            if(isset($_SESSION['username'])) return false;
             new view('auth' . DIRECTORY_SEPARATOR . 'logIn', ['note' => $note]);
         }
 
@@ -47,6 +50,7 @@
             
             if(User::newUser($username, $email, $password))
             {
+                $_SESSION['username']= $username;
                 header("Location: auth_home/".$username);
             }
 
@@ -60,6 +64,7 @@
 
             if(User::auth($username, $password))
             {
+                $_SESSION['username']=$username;
                 echo "AUTHENTICATED!! <br>";
                 header("Location: auth_home/" . $username);
                 return; //safety
@@ -75,7 +80,21 @@
         public function auth_home($unm='')
         {
             //don't encode parameter here to avoid confusing errors
+            if(!isset($_SESSION['username'])) {echo "No Session Set <br>"; return false;}
             new view('auth' . DIRECTORY_SEPARATOR . 'auth_home', ['unm' => $unm]);
+        }
+
+
+        public function logOut()
+        {
+            if(isset($_SESSION['username']))
+            {
+                unset($_SESSION['username']);
+
+                session_destroy();
+
+                header("Location: ../home");
+            }
         }
     }
 

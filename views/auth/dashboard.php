@@ -22,12 +22,23 @@
             </div>
         </nav> <br><br><br>
         <main>
-            <h5> New Post </h5><br><br>
+            <h4> New Post </h4><br><br>
             <form action="/ekom/public/post/newPost" method="POST">
                 Post Title: <input type="text" name="post_title" required/> <br><br>
                 Post Body: <input name="post_body" style="height:200px;width:200px" required/> <br><br>
                 <button type="submit"> Submit Post </button>
-            </form><br><hr><br><br>
+            </form><br><hr><br>
+
+            <h4> Your Posts </h4><br>
+            <?php
+                $arr_my_posts = $this->getData()['all_posts'];
+                for($i=0; $i<count($arr_my_posts); $i++)
+                {
+                    echo "<h5>". $arr_my_posts[$i]['title'] . "</h5>";
+                    echo "<h6>". $arr_my_posts[$i]['body'] . "</h6>";
+                    echo "<hr>";
+                }
+            ?>
         </main>
     </body>
 </html>

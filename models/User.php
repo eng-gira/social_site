@@ -53,16 +53,16 @@
 
             if($stmt=$myCon->prepare($sql))
             {
-                echo "inside... <br>";
+              //  echo "inside... <br>";
                 $stmt->bind_param("s", $username);
                 if($stmt->execute())
                 {
-                    echo "executed...<br>";
+                   // echo "executed...<br>";
                     $stmt->store_result();
                     if($stmt->num_rows != 0) {
                         $stmt->bind_result($id); 
                         while ($stmt->fetch()) {
-                            echo "username exists with id: ". $id . "<br>";
+                           // echo "username exists with id: ". $id . "<br>";
                             $stmt->close();
                             return $id;
                         }
@@ -70,7 +70,7 @@
                 }
                 else {echo "Couldn't execute method: findUserByUsername<br>"; $stmt->close(); return -1;}
             }
-            echo "username doesn't exist<br>";
+           echo "username doesn't exist<br>";
             $stmt->close();
             return -1;
         }

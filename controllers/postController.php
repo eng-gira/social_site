@@ -3,11 +3,6 @@
 
     class postController
     {
-        public function index()
-        {
-            echo "index() from postController<br>";
-        }
-
         public function newPost()
         {
             if(!isset($_SESSION['username']))

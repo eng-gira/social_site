@@ -59,7 +59,7 @@
             if(User::newUser($username, $email, $password))
             {
                 $_SESSION['username']= $username;
-                header("Location: dashboard/".$username);
+                header("Location: dashboard");
             }
 
             return "Failed";
@@ -74,7 +74,7 @@
             {
                 $_SESSION['username']=$username;
                 echo "AUTHENTICATED!! <br>";
-                header("Location: dashboard/" . $username);
+                header("Location: dashboard" );
                 return; //safety
             }
 
@@ -85,11 +85,15 @@
             return false;
         }
 
-        public function dashboard($unm='')
+        public function dashboard()
         {
             //don't encode parameter here to avoid confusing errors
             if(!isset($_SESSION['username'])) {header("Location: logIn"); return false;}
-            new view('auth' . DIRECTORY_SEPARATOR . 'dashboard', ['unm' => $unm]);
+            
+            //show all posts by the authenticated
+            $all_posts = Post::showPostsFor(User::findUserByUsername($_SESSION['username']));
+            
+            new view('auth' . DIRECTORY_SEPARATOR . 'dashboard', ['all_posts' => $all_posts]);
         }
 
         public function logOut()

@@ -5,13 +5,21 @@
     {
         public function reg($note='')
         {
-            if(isset($_SESSION['username'])) return false;
+            if(isset($_SESSION['username']))
+            {
+                header("Location: ../home");
+                return false;
+            }
             new view('auth' . DIRECTORY_SEPARATOR . 'reg', ['note' => $note]);
         }
 
         public function logIn($note='')
         {
-            if(isset($_SESSION['username'])) return false;
+            if(isset($_SESSION['username']))
+            {   
+                header("Location: ../home");
+                return false;
+            }
             new view('auth' . DIRECTORY_SEPARATOR . 'logIn', ['note' => $note]);
         }
 

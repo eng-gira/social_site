@@ -1,24 +1,34 @@
 <html>
     <head> <title> Home | Ekom </title> </head>
     <body>
-        <nav>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <!-- DON'T SHOW REG/LOG IN IF LOGGED IN. SHOW LOG OUT INSTEAD -->
             <?php 
             session_start(); //for i'm not in the same file (as in auth_home)
             if(isset($_SESSION['username']))
             {
                ?>
-            
-                <a href="auth/logOut"> Log Out </a>
-            
+                <a class="navbar-brand" href="home"> Home </a>
+                <a class="navbar-brand" href="home/about"> About </a>
+                <a class="navbar-brand" href="auth/dashboard"> Dashboard </a>
+                
+                <div class="container justify-content-md-end">            
+                    <a class="navbar-brand" href="auth/logOut"> Log Out </a>
+                </div>
+
                 <?php
             }
             else
             {
                 ?>
-            
-                <a href="auth/reg"> Register </a>  |  <a href="auth/logIn"> Log In </a>
-            
+                <a class="navbar-brand" href="home"> Home </a>
+                <a class="navbar-brand" href="home/about"> About </a>
+                <a class="navbar-brand" href="auth/dashboard"> Dashboard </a>
+                
+                <div class="container justify-content-md-end">
+                    <a class="navbar-brand" href="auth/reg"> Register </a>
+                    <a class="navbar-brand" href="auth/logIn"> Log In </a>
+                </div>
                 <?php
             }
             ?>

@@ -15,3 +15,5 @@
     Password: <input type="password" name="pw" required/>
     <button type="submit"> Login </button>
 </form>
+
+<p> Don't have an account? <a href="/ekom/public/auth/reg"> Register </a></p>

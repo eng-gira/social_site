@@ -8,6 +8,11 @@
             $view = new View('home' . DIRECTORY_SEPARATOR . 'index', ['id' => $id, 'name' => $name]);
         }
 
+        public function about()
+        {
+            echo "ABOUT<br>";
+        }
+
         public function pageNotFound()
         {
             echo 'pageNotFound() from homeController<br>';

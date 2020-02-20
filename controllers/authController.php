@@ -59,7 +59,7 @@
             if(User::newUser($username, $email, $password))
             {
                 $_SESSION['username']= $username;
-                header("Location: auth_home/".$username);
+                header("Location: dashboard/".$username);
             }
 
             return "Failed";
@@ -74,7 +74,7 @@
             {
                 $_SESSION['username']=$username;
                 echo "AUTHENTICATED!! <br>";
-                header("Location: auth_home/" . $username);
+                header("Location: dashboard/" . $username);
                 return; //safety
             }
 
@@ -85,13 +85,12 @@
             return false;
         }
 
-        public function auth_home($unm='')
+        public function dashboard($unm='')
         {
             //don't encode parameter here to avoid confusing errors
-            if(!isset($_SESSION['username'])) {echo "No Session Set <br>"; return false;}
-            new view('auth' . DIRECTORY_SEPARATOR . 'auth_home', ['unm' => $unm]);
+            if(!isset($_SESSION['username'])) {header("Location: logIn"); return false;}
+            new view('auth' . DIRECTORY_SEPARATOR . 'dashboard', ['unm' => $unm]);
         }
-
 
         public function logOut()
         {

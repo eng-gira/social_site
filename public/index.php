@@ -12,7 +12,7 @@
     define ('_PUBLIC', WWW . 'public/');
 
     // echo dirname(__DIR__); -> C:\xampp\htdocs\ekom_proj
-    echo "index.php here!<br>";
+//    echo "index.php here!<br>";
 
     //setting include-paths for the autoloader
     $modules = [ROOT, CORE, MODEL, CONTROLLER, DATA];
@@ -22,8 +22,7 @@
     //AUTO LOAD
     spl_autoload_register('spl_autoload', false);
 ?>
-    <!-- <link rel="stylesheet" href="/ekom/inc/css/styles.css"> -->
-    <div id="test1"> Test1 </div>
+    <link rel="stylesheet" href="/ekom/inc/css/bootstrap.css">
 <?php
     new Application;
 ?>

@@ -42,6 +42,9 @@
             return false;
         }
 
+        /*
+            @return id or -1;
+        */
         public static function findUserByUsername($username)
         {
             $myCon = self::connect();

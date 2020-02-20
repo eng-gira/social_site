@@ -7,6 +7,7 @@
     }
 
     echo $_SESSION['username'] . "<- from sessions. <br>";*/
+    
 
 ?>
 <html>
@@ -29,16 +30,47 @@
                 <button type="submit"> Submit Post </button>
             </form><br><hr><br>
 
-            <h4> Your Posts </h4><br>
+
             <?php
                 $arr_my_posts = $this->getData()['all_posts'];
+                if(count($arr_my_posts)>0)
+                {
+                ?>
+                    <h4> Your Posts </h4><br>
+                <?php
+                }
                 for($i=0; $i<count($arr_my_posts); $i++)
                 {
+                    ?>
+                    <div class='post'>
+                    <?php
                     echo "<h5>". $arr_my_posts[$i]['title'] . "</h5>";
                     echo "<h6>". $arr_my_posts[$i]['body'] . "</h6>";
+                    $delete_link = "/ekom/public/post/deletePost/" . $arr_my_posts[$i]['id'];
                     echo "<hr>";
+                    ?>
+                    <a href=<?php echo "/ekom/public/post/editPost/" . $arr_my_posts[$i]['id']; ?>> Edit </a> | 
+                    <button onclick='confirmPostDeletion("<?php echo $delete_link; ?>")')>Delete</button>
+                    <?php
+                    echo "<hr>";
+                    ?>
+                    </div>
+                    <?php
                 }
             ?>
         </main>
     </body>
 </html>
+<script>
+    function confirmPostDeletion(link)
+    {
+        let r = confirm("Confirm Post DELETION");
+        if (r == true) {
+            let xhttp = new XMLHttpRequest;
+
+            xhttp.open("POST", link, true);
+            xhttp.send();
+            location.reload();
+        }
+    }
+</script>

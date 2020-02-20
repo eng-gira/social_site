@@ -27,20 +27,64 @@
                 return true;
             }
         }
-
-        public function deletePost()
+ 
+        public function editPost($id=-1)
         {
-
-        }
-        
-        public function editPost()
-        {
+            if(!isset($_SESSION['username']) || $id < 0)
+            {
+                header("Location: /ekom/public/home");
+                return false;
+            }
+            
+            new View('auth' . DIRECTORY_SEPARATOR . 'editPost', array('post_id'=>$id));
             
         }
 
-        public function updatePost()
+        public function updatePost($id=-1)
         {
+            if(!isset($_SESSION['username']) || $id < 0)
+            {
+                header("Location: /ekom/public/home");
+                return false;
+            }
 
+            $new_title = isset($_POST['new_title']) ? htmlspecialchars($_POST['new_title']) : '';
+            $new_body = isset($_POST['new_body']) ? htmlspecialchars($_POST['new_body']) : '';
+
+            if(strlen($new_title) < 1 || strlen($new_body) <1) 
+            {
+                header("Location: /ekom/public/auth/dashboard");
+                return false;
+            }
+
+            if(!Post::updatePost($id, $new_title, $new_body))
+            {
+                header("Location: /ekom/public/auth/dashboard");
+                return false;
+            }
+
+            header("Location: /ekom/public/auth/dashboard");
+            return true;
         }
+        
+        
+        public function deletePost($id=-1)
+        {
+            if(!isset($_SESSION['username']) || $id < 0)
+            {
+                header("Location: /ekom/public/home");
+                return false;
+            }
+
+            if(!Post::deletePost($id)) 
+            {
+                header("Location: /ekom/public/auth/dashboard");
+                return false;
+            }
+
+          //  header("Location: /ekom/public/auth/dashboard");
+            return true;
+        }
+       
     }
 ?>

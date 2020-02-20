@@ -18,18 +18,44 @@
             return false;
         }
 
+        public static function updatePost($id, $new_title, $new_body)
+        {
+            $myCon = self::connect();
+            $sql = "UPDATE posts SET title = ?, body = ? WHERE id = $id";
+            if($stmt=$myCon->prepare($sql))
+            {
+                $stmt->bind_param("ss", $new_title, $new_body);
+                if(!$stmt->execute()) return false;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        
+        public static function deletePost($id)
+        {
+            $myCon = self::connect();
+            $sql = "DELETE FROM posts WHERE id = $id";
+
+            if($myCon->query($sql)) return true;
+
+            return false;
+        }
+        
         public static function showPostsFor($id)
         {
             $ret = array();
             $ret_counter = 0;
             $myCon = self::connect();
-            $sql = "SELECT title, body FROM posts WHERE author = $id ORDER BY id DESC";
+            $sql = "SELECT id, title, body FROM posts WHERE author = $id ORDER BY id DESC";
 
             $result = $myCon->query($sql);
             if($result->num_rows!=0)
             {
                 while($row = $result->fetch_assoc()) {
-                    $ret[$ret_counter] = array("title"=>$row['title'], 'body' => $row['body']);
+                    $ret[$ret_counter] = array('id'=>$row['id'], 'title'=>$row['title'], 'body' => $row['body']);
                     $ret_counter++;
                 }   
             }

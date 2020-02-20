@@ -23,6 +23,7 @@
     spl_autoload_register('spl_autoload', false);
 ?>
     <link rel="stylesheet" href="/ekom/inc/css/bootstrap.css">
+    <link rel="stylesheet" href="/ekom/inc/css/ekom_custom.css">
 <?php
     new Application;
 ?>

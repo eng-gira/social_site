@@ -85,4 +85,12 @@
             location.reload();
         }
     }
+
+    // function comment(post_id)
+    // {
+        //xhttp.open("POST","/ekom/public/comment/newComment", true);
+        //Send the proper header information along with the request
+        //xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        //xhttp.send();
+    //}
 </script>

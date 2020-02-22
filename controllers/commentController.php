@@ -1,14 +1,12 @@
 <?php
 
-    session_start();
-    class commentController
+    class commentController extends Controller
     {
         public function newComment()
         {
             if(!isset($_SESSION['username']))
             {
-                $this->goHome();
-                return false; // to never pass this line
+                self::goHome();
             }
 
             $post = isset($_POST['post']) ? intval($_POST['post']) : -1;
@@ -16,22 +14,15 @@
 
             if($post < 0 || strlen($body) < 1)
             {
-                $this->goHome();
-                return false; // to never pass this line
+                self::goHome();
             }
 
             if(!Comment::newComment($body, intval($_SESSION['username']), $post))
             {
-                $this->gotHome();
-                return false; // to never pass this line
+                self::goDashboard();
             }
 
             return true;
-        }
-
-        public function goHome()
-        {
-            header("Location: /ekom/public/home");
         }
     }
 

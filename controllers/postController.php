@@ -1,14 +1,12 @@
 <?php
-    session_start();
 
-    class postController
+    class postController extends Controller
     {
         public function newPost()
         {
             if(!isset($_SESSION['username']))
             {
-                header("Location: ../home");
-                return false;
+                self::goHome();
             }
 
             $post_title = htmlspecialchars($_POST['post_title']);

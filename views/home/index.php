@@ -4,7 +4,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <!-- DON'T SHOW REG/LOG IN IF LOGGED IN. SHOW LOG OUT INSTEAD -->
             <?php 
-            session_start(); //for i'm not in the same file (as in dashboard)
+           // session_start(); //for i'm not in the same file (as in dashboard)
             if(isset($_SESSION['username']))
             {
                ?>

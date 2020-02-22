@@ -1,14 +1,12 @@
 <?php
-    session_start();
 
-    class authController
+    class authController extends Controller
     {
         public function reg($note='')
         {
             if(isset($_SESSION['username']))
             {
-                header("Location: ../home");
-                return false;
+                self::goDashboard();
             }
             new view('auth' . DIRECTORY_SEPARATOR . 'reg', ['note' => $note]);
         }
@@ -17,8 +15,7 @@
         {
             if(isset($_SESSION['username']))
             {   
-                header("Location: ../home");
-                return false;
+                self::goDashboard();
             }
             new view('auth' . DIRECTORY_SEPARATOR . 'logIn', ['note' => $note]);
         }

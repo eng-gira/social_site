@@ -1,6 +1,6 @@
 <?php
 
-    class homeController
+    class homeController extends Controller
     {
         public function index($id='', $name='')
         {
@@ -15,7 +15,7 @@
 
         public function pageNotFound()
         {
-            echo 'pageNotFound() from homeController<br>';
+            self::goHome();
         }
     }
 ?>

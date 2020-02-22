@@ -11,7 +11,7 @@
             {
                 // echo 'prepared = true <br>'; //debug
                 $empty_string='';
-                $stmt->bind_param("sssss", $body, $author, $post, $empty_string, $empty_string);
+                $stmt->bind_param("siiss", $body, $author, $post, $empty_string, $empty_string);
 
                 if(!$stmt->execute())
                 {

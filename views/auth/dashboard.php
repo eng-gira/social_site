@@ -46,14 +46,26 @@
                     <?php
                     echo "<h5>". $arr_my_posts[$i]['title'] . "</h5>";
                     echo "<h6>". $arr_my_posts[$i]['body'] . "</h6>";
-                    $delete_link = "/ekom/public/post/deletePost/" . $arr_my_posts[$i]['id'];
                     echo "<hr>";
+                    $delete_link = "/ekom/public/post/deletePost/" . $arr_my_posts[$i]['id'];
+                    $current_post_id = $arr_my_posts[$i]['id'];
                     ?>
                     <a href=<?php echo "/ekom/public/post/editPost/" . $arr_my_posts[$i]['id']; ?>> Edit </a> | 
                     <button onclick='confirmPostDeletion("<?php echo $delete_link; ?>")')>Delete</button>
                     <?php
                     echo "<hr>";
                     ?>
+                    <form action=<?php echo '/ekom/public/comment/newComment/' . $current_post_id;?> method="POST">
+                        <input type="text" name="comment_body"/>
+                        <button type="submit">Comment</button>
+                    </form>
+                    <hr>
+                    <div id='all_comments'>
+                        <?php
+                            //loop $this->getData()['all_comments'];
+                        ?>
+                    </div>
+                    <hr>
                     </div>
                     <?php
                 }

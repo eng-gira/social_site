@@ -2,27 +2,23 @@
 
     class commentController extends Controller
     {
-        public function newComment()
+        public function newComment($post = -1)
         {
             if(!isset($_SESSION['username']))
             {
                 self::goHome();
             }
 
-            $post = isset($_POST['post']) ? intval($_POST['post']) : -1;
-            $body = isset($_POST['body']) ? $_POST['body'] : '';
+            $body = isset($_POST['comment_body']) ? htmlspecialchars($_POST['comment_body']) : '';
 
-            if($post < 0 || strlen($body) < 1)
+            if($post < 0 || strlen($body)<1)
             {
                 self::goHome();
             }
 
-            if(!Comment::newComment($body, intval($_SESSION['username']), $post))
-            {
-                self::goDashboard();
-            }
+            Comment::newComment($body, User::findUserByUsername($_SESSION['username']), $post);
 
-            return true;
+            self::goDashboard();
         }
     }
 

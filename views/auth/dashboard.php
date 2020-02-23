@@ -43,18 +43,19 @@
                     echo "<hr>";
                     $delete_link = "/ekom/public/post/deletePost/" . $arr_my_posts[$i]['id'];
                     $current_post_id = $arr_my_posts[$i]['id'];
+                    $all_comments_for_this = 'all_comments_for_' . $current_post_id;
                     ?>
                     <a href=<?php echo "/ekom/public/post/editPost/" . $arr_my_posts[$i]['id']; ?>> Edit </a> | 
                     <button onclick='confirmPostDeletion("<?php echo $delete_link; ?>")')>Delete</button>
                     <?php
                     echo "<hr>";
                     ?>
-                    <form action=<?php echo '/ekom/public/comment/newComment/' . $current_post_id;?> method="POST">
-                        <input type="text" name="comment_body"/>
-                        <button type="submit">Comment</button>
-                    </form>
+                    
+                    <input type="text" id="comment_body" name="comment_body"/>
+                    <button type="submit" onclick="comment(<?php echo $current_post_id; ?>)">Comment</button>
+                    
                     <hr>
-                    <div id='all_comments'>
+                    <div id='<?php echo $all_comments_for_this; ?>'>
                         <?php
                             //loop $this->getData()['all_comments'];
                         ?>
@@ -80,11 +81,20 @@
         }
     }
 
-    // function comment(post_id)
-    // {
-        //xhttp.open("POST","/ekom/public/comment/newComment", true);
-        //Send the proper header information along with the request
-        //xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        //xhttp.send();
-    //}
+    function comment(post_id)
+    {
+        let comment_body = document.getElementById('comment_body').value;
+
+        if(comment_body.length<1) {alert("empty comment"); return false;}
+
+        let xhttp = new XMLHttpRequest;
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("all_comments_for_"+post_id).innerHTML += xhttp.responseText;
+            }
+        };
+        xhttp.open("POST","/ekom/public/comment/newComment", true);
+        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhttp.send("comment_body="+comment_body+"&post_id="+post_id);
+    }
 </script>

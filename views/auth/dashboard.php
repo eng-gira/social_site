@@ -27,6 +27,8 @@
 
             <?php
                 $arr_my_posts = $this->getData()['all_posts'];
+                $arr_comments = $this->getData()['all_comments_per_post'];
+
                 if(count($arr_my_posts)>0)
                 {
                 ?>
@@ -57,7 +59,15 @@
                     <hr>
                     <div id='<?php echo $all_comments_for_this; ?>'>
                         <?php
-                            //loop $this->getData()['all_comments'];
+
+                        if(count($arr_comments)>0)
+                        {
+                            for($i=0;$i<count($arr_comments[$current_post_id]); $i++)
+                            {
+                                echo $arr_comments[$current_post_id][$i] . '<br>';
+                            }
+                        }
+                        
                         ?>
                     </div>
                     <hr>
@@ -90,7 +100,10 @@
         let xhttp = new XMLHttpRequest;
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("all_comments_for_"+post_id).innerHTML += xhttp.responseText;
+                let holder = document.getElementById("all_comments_for_"+post_id).innerHTML;
+                let new_comment = xhttp.responseText;
+
+                document.getElementById("all_comments_for_"+post_id).innerHTML = new_comment + holder;
             }
         };
         xhttp.open("POST","/ekom/public/comment/newComment", true);

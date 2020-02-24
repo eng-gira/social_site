@@ -90,7 +90,10 @@
             //show all posts by the authenticated
             $all_posts = Post::showPostsFor(User::findUserByUsername($_SESSION['username']));
             
-            new view('auth' . DIRECTORY_SEPARATOR . 'dashboard', ['all_posts' => $all_posts]);
+            $all_comments_per_post = Comment::showCommentsForGroup($all_posts);
+            
+            new view('auth' . DIRECTORY_SEPARATOR . 'dashboard', ['all_posts' => $all_posts, 
+            'all_comments_per_post' => $all_comments_per_post]);
         }
 
         public function logOut()

@@ -30,4 +30,27 @@
         }
     }
 
+    /*
+        @returns Comment id or -1;
+    */
+    public static function findCommentById($id)
+    {
+        if(!is_int($id)) return -1;
+        
+        $myCon = self::connect();
+        
+        $sql = "SELECT id FROM comments WHERE id = $id";
+        
+        $result = $myCon->query($sql);
+        
+        if($result->num_rows!=0) 
+        {
+            while($row=$result->fetch_assoc())
+            {
+                return inval($result['id']);
+            }
+        }
+        
+        return -1;
+    }
 ?>

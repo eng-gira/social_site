@@ -2,10 +2,10 @@
 
     class homeController extends Controller
     {
-        public function index($error='')
+        public function index()
         {
             // echo "index() from homeController. id = ". $id . ", name = ". $name . "<br>";
-            $view = new View('home' . DIRECTORY_SEPARATOR . 'index', ['error' => $error]);
+            $view = new View('home' . DIRECTORY_SEPARATOR . 'index');
         }
 
         public function about()

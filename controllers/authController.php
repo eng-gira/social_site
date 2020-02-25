@@ -56,7 +56,9 @@
             if(User::newUser($username, $email, $password))
             {
                 $_SESSION['username']= $username;
-                header("Location: dashboard");
+                $_SESSION['id']=intval(User::findUserByUsername($username));
+                
+                self::goDashboard();
             }
 
             return "Failed";
@@ -70,8 +72,12 @@
             if(User::auth($username, $password))
             {
                 $_SESSION['username']=$username;
+                $_SESSION['id']=intval(User::findUserByUsername($username));
+
                 echo "AUTHENTICATED!! <br>";
-                header("Location: dashboard" );
+
+                self::goDashboard();
+                
                 return; //safety
             }
 
@@ -101,10 +107,11 @@
             if(isset($_SESSION['username']))
             {
                 unset($_SESSION['username']);
+                unset($_SESSION['id']);
 
                 session_destroy();
 
-                header("Location: ../home");
+                self::goHome();
             }
         }
     }

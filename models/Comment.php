@@ -46,15 +46,28 @@
                 $sql = $base_sql . $current_post_id . " ORDER BY id DESC";
 
                 $result = $myCon->query($sql);
-
+                
                 if($result->num_rows != 0)
                 {
-                    $sep_counter = 0;
+                    $arr=array();
                     while($row=$result->fetch_assoc())
                     {
-                        $comments[$current_post_id][$sep_counter] = $row['body'];
-                        $sep_counter++;
+                        
+                        $arr[count($arr)]=array('id'=>$row['id'], 'body' => $row['body'], 
+                        'author' => $row['author'], 'up_voters' => $row['up_voters'], 
+                        'down_voters' => $row['down_voters']);
+                        
+                        /*
+                        Expected OP:
+                        ----------- 
+
+                        $comments["post_of_id_4"] = array(array('body' => 'the comment', 'author' => 'author_id', 
+                        'up_voters' => 'id1;id2;id3;', 'down_voters' => 'id1;id2;id3;'), 
+                        array(...), array(...), array(...));
+                        
+                        */
                     }
+                    $comments[$current_post_id]=$arr;
                 }
                 else{
                     $errors++; //debugging thing
@@ -62,6 +75,25 @@
             }
 
             return $comments;
+        }
+
+        public static function updateComment($id, $new_comment_body)
+        {
+            $myCon = self::connect();
+
+            $sql = "UPDATE comments SET body = ? WHERE id = $id";
+
+            if($stmt=$myCon->prepare($sql))
+            {
+                $stmt->bind_param("s", $new_comment_body);
+
+                if($stmt->execute())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /*

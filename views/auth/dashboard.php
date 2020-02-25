@@ -64,7 +64,27 @@
                         {
                             for($i=0;$i<count($arr_comments[$current_post_id]); $i++)
                             {
-                                echo $arr_comments[$current_post_id][$i] . '<br>';
+                                echo '<h5>' . $arr_comments[$current_post_id][$i]['author'] . '</h5>';
+                                echo '<h6>' . $arr_comments[$current_post_id][$i]['body'] . '</h6>';
+                                //check owner then add edit and delete options
+                                
+                                if(intval($arr_comments[$current_post_id][$i]['author'])==$_SESSION['id'])
+                                {
+                                    ?>
+                                    <h6> 
+                                        <a href=
+                                        <?php echo '/ekom/public/comment/editComment/'.
+                                        $arr_comments[$current_post_id][$i]['id'];?>
+                                        >Edit</a> or 
+                                        <p style='cursor:pointer;' onclick=
+                                        <?php 
+                                            echo 'deleteComment(' . $arr_comments[$current_post_id][$i]['id'] .')';
+                                        ?>>Delete</p> 
+                                    </h6> 
+                                    <br>
+                                    <?php
+                                }
+                                echo '<br>';
                             }
                         }
                         
@@ -109,5 +129,10 @@
         xhttp.open("POST","/ekom/public/comment/newComment", true);
         xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhttp.send("comment_body="+comment_body+"&post_id="+post_id);
+    }
+
+    function deleteComment(id)
+    {
+        
     }
 </script>

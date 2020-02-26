@@ -77,9 +77,11 @@
                                         $arr_comments[$current_post_id][$i]['id'];?>
                                         >Edit</a> or 
                                         <p style='cursor:pointer;' onclick=
-                                        <?php 
-                                            echo 'deleteComment(' . $arr_comments[$current_post_id][$i]['id'] .')';
-                                        ?>>Delete</p> 
+                                        '<?php 
+                                            echo 'deleteComment(' . $current_post_id . 
+                                            ', ' . $arr_comments[$current_post_id][$i]['id']
+                                            .')';
+                                        ?>'>Delete</p> 
                                     </h6> 
                                     <br>
                                     <?php
@@ -131,8 +133,18 @@
         xhttp.send("comment_body="+comment_body+"&post_id="+post_id);
     }
 
-    function deleteComment(id)
+    function deleteComment(post_id, comment_id)
     {
-        
+        if(comment_id < 0 || post_id < 0) return false;
+
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                document.getElementById("all_comments_for_"+post_id).innerHTML = xhttp.responseText;
+            }
+        };
+        xhttp.open("GET", "/ekom/public/comment/deleteComment/"+post_id+"/"+comment_id, true);
+        xhttp.send();
     }
 </script>

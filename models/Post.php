@@ -43,6 +43,27 @@
 
             return false;
         }
+
+        public static function getPostById($id)
+        {
+            $myCon = self::connect();
+            $sql = "SELECT * FROM posts WHERE id = $id";
+            $post = array();
+            $result = $myCon->query($sql);
+
+            if($reuslt->num_rows==1)
+            {
+                while($row=$result->fetch_assoc())
+                {
+                    $post['id']=$row['id'];
+                    $post['title']=$row['title'];
+                    $post['body']=$row['body'];
+                    $post['author']=$row['author'];
+                }
+            }else {return false;}
+
+            return $post;
+        }
         
         public static function showPostsFor($id)
         {

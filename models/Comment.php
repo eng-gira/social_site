@@ -29,6 +29,29 @@
             return true;
         }
 
+        public static function showCommentsForPost($post_id)
+        {
+            $myCon = self::connect();
+
+            $sql = "SELECT * FROM comments WHERE post = $post_id ORDER BY id DESC";
+
+            $comments = array();
+
+            $result=$myCon->query($sql);
+            if($result->num_rows!=0)
+            {
+                while($row=$result->fetch_assoc())
+                {
+                    $comments[count($comments)] = array(
+                        'id'=>$row['id'], 'body'=>$row['body'], 'author'=>$row['author'], 'post'=>$row['post'],
+                        'up_voters'=>$row['up_voters'], 'down_voters'=>$row['down_voters']
+                    );
+                }
+            }else {return false;}
+
+            return $comments;
+        }
+
         public static function showCommentsForGroup($posts_group)
         {
             $myCon = self::connect();
@@ -96,6 +119,17 @@
             return false;
         }
 
+        public static function deleteComment($id)
+        {
+            $myCon = self::connect();
+
+            $sql = "DELETE FROM comments WHERE id = $id";
+
+            if($myCon->query($sql)) return true;
+
+            return false;
+        }
+
         /*
         @returns Comment id or -1;
         */
@@ -113,7 +147,7 @@
             {
                 while($row=$result->fetch_assoc())
                 {
-                    return inval($result['id']);
+                    return inval($row['id']);
                 }
             }
             

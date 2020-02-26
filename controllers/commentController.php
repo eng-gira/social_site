@@ -52,6 +52,26 @@
 
             self::goDashboard();
         }
+
+        public function deleteComment($post_id = -1, $comment_id=-1)
+        {
+            if(!isset($_SESSION['username'])) self::goHome();
+            if($post_id< 0 || $comment_id <0) self::goDashboard();
+
+            Comment::deleteComment($comment_id);
+
+            $arr_comments = Comment::showCommentsForPost($post_id);
+
+            $comments = '';
+
+            for($i=0;$i<count($arr_comments);$i++)
+            {
+                $comments .= $arr_comments[$i]['body'];
+                $comments .='<br>';
+            }
+            
+            echo $comments;
+        }
     }
 
 ?>

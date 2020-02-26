@@ -153,6 +153,60 @@
             
             return -1;
         }
-    }
+        
+        public static function upvote($id)
+        {
+            $myCon = self::connect();
 
+            $up_voter = $_SESSION['id'].';';
+
+            //getting old upvoters
+            $sql_1 = "SELECT up_voters FROM comments WHERE id = ?";
+            $old_up_voters = '';
+            if($stmt=$myCon->prepare($sql_1))
+            {
+                $stmt->bind_param("i", $id);
+
+                if($stmt->execute())
+                {
+                    $stmt->store_result();
+                    if($stmt->num_rows != 0) {
+                        $stmt->bind_result($old_up_voters); 
+                        while ($stmt->fetch()) {
+                            //should i do anyth here?
+                        }
+                    }
+                    else {echo "NO ROWS!<br>"; return false;}
+                }
+                else{
+                    echo "failed to execute!<br>";
+                    return false;
+                }
+            }else {echo "FAILED TO PREPARE 1 <br>"; return false;}
+            
+            // $arr_old_up_voters = explode(';', $old_up_voters, -1);
+
+            // if(in_array($up_voter, $arr_old_up_voters)) 
+            // {
+            //     $old_up_voters = str_replace($up_voter.';', '', $old_up_voters);
+            //     $up_voter='';
+            // }
+
+            $sql_2 = 'UPDATE comments SET up_voters = ? WHERE id = ?';
+
+            if($stmt=$myCon->prepare($sql_2))
+            {
+                $param1=$old_up_voters . $up_voter ;
+                $stmt->bind_param("si", $param1, $id);
+
+                if(!$stmt->execute())
+                {
+                    echo "FAILED TO EXECUTE 2<br>"; return false;
+                }
+            }else {echo "FAILED TO PREPARE 2<br>"; return false;}
+
+
+            return true;
+        }
+    }
 ?>

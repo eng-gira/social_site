@@ -85,6 +85,13 @@
                                     </h6> 
                                     <br>
                                     <?php
+                                // }
+                                // else {
+                                    ?>
+                                    <h6 id=<?php echo 'upvote_'. $arr_comments[$current_post_id][$i]['id']; ?> 
+                                    onclick=<?php echo 'upvote(' . $arr_comments[$current_post_id][$i]['id'] . 
+                                    ')';?>> upvote </h6>
+                                    <?php
                                 }
                                 echo '<br>';
                             }
@@ -145,6 +152,19 @@
             }
         };
         xhttp.open("GET", "/ekom/public/comment/deleteComment/"+post_id+"/"+comment_id, true);
+        xhttp.send();
+    }
+
+    function upvote(comment_id)
+    {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                document.getElementById('upvote_'+comment_id).innerHTML = xhttp.responseText;
+            }
+        };
+        xhttp.open("GET", "/ekom/public/comment/upvote"+"/"+comment_id, true);
         xhttp.send();
     }
 </script>

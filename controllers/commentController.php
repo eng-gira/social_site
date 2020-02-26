@@ -71,6 +71,19 @@
             }
             
             echo $comments;
+            return;
+        }
+
+        public function upvote($id=-1)
+        {
+            if(!isset($_SESSION['username'])) self::goHome();
+            if($id<0) self::goDashboard();
+
+            if(Comment::upvote($id))
+            {
+                echo 'upvoted';return;
+            }
+            echo 'upvote';
         }
     }
 

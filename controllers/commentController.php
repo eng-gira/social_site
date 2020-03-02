@@ -83,6 +83,7 @@
             {
                 echo 'upvoted';return;
             }
+            
             echo 'upvote';
         }
     }

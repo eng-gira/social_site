@@ -158,9 +158,9 @@
         {
             $myCon = self::connect();
 
-            $up_voter = $_SESSION['id'].';';
+            $up_voter = $_SESSION['id'];
 
-            //getting old upvoters
+            //getting old upvoters (WORKS)
             $sql_1 = "SELECT up_voters FROM comments WHERE id = ?";
             $old_up_voters = '';
             if($stmt=$myCon->prepare($sql_1))
@@ -172,41 +172,44 @@
                     $stmt->store_result();
                     if($stmt->num_rows != 0) {
                         $stmt->bind_result($old_up_voters); 
-                        while ($stmt->fetch()) {
-                            //should i do anyth here?
-                        }
+                        
+                        $stmt->fetch(); 
                     }
                     else {echo "NO ROWS!<br>"; return false;}
                 }
                 else{
-                    echo "failed to execute!<br>";
+                    echo "failed to execute 1 <br>";
                     return false;
                 }
             }else {echo "FAILED TO PREPARE 1 <br>"; return false;}
             
-            // $arr_old_up_voters = explode(';', $old_up_voters, -1);
+            $arr_old_up_voters = explode(';', $old_up_voters, -1);
 
-            // if(in_array($up_voter, $arr_old_up_voters)) 
-            // {
-            //     $old_up_voters = str_replace($up_voter.';', '', $old_up_voters);
-            //     $up_voter='';
-            // }
+            if(in_array($up_voter, $arr_old_up_voters))
+            {
+                //remove upvote (WORKS)
+                $old_up_voters = str_replace($up_voter.';', '', $old_up_voters);
+                $up_voter='';
+            }
+
+            else {$up_voter .= ';';}
 
             $sql_2 = 'UPDATE comments SET up_voters = ? WHERE id = ?';
 
             if($stmt=$myCon->prepare($sql_2))
             {
-                $param1=$old_up_voters . $up_voter ;
+                $param1=$old_up_voters . $up_voter;
                 $stmt->bind_param("si", $param1, $id);
 
                 if(!$stmt->execute())
                 {
                     echo "FAILED TO EXECUTE 2<br>"; return false;
                 }
+
             }else {echo "FAILED TO PREPARE 2<br>"; return false;}
 
 
-            return true;
+            return strlen($up_voter)>1;
         }
     }
 ?>

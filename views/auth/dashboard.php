@@ -87,11 +87,24 @@
                                     <?php
                                 // }
                                 // else {
+                                    $arr_up_voters = explode(';', $arr_comments[$current_post_id][$i]['up_voters'], -1);
+
+                                    if(in_array($_SESSION['id'], $arr_up_voters))
+                                    {
                                     ?>
-                                    <h6 id=<?php echo 'upvote_'. $arr_comments[$current_post_id][$i]['id']; ?> 
-                                    onclick=<?php echo 'upvote(' . $arr_comments[$current_post_id][$i]['id'] . 
-                                    ')';?>> upvote </h6>
+                                        <h6 id=<?php echo 'upvote_'. $arr_comments[$current_post_id][$i]['id']; ?> 
+                                        onclick=<?php echo 'upvote(' . $arr_comments[$current_post_id][$i]['id'] . 
+                                        ',)';?>> upvoted </h6>
+                                    
                                     <?php
+                                    }
+                                    else {
+                                        ?>
+                                        <h6 id=<?php echo 'upvote_'. $arr_comments[$current_post_id][$i]['id']; ?> 
+                                        onclick=<?php echo 'upvote(' . $arr_comments[$current_post_id][$i]['id'] . 
+                                        ')';?>> upvote </h6>
+                                    <?php
+                                    }
                                 }
                                 echo '<br>';
                             }

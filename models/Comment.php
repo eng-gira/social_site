@@ -211,5 +211,63 @@
 
             return strlen($up_voter)>1;
         }
+
+        public static function downvote($id)
+        {
+            $myCon = self::connect();
+
+            $down_voter = $_SESSION['id'];
+
+            //getting old upvoters (WORKS)
+            $sql_1 = "SELECT down_voters FROM comments WHERE id = ?";
+            $old_down_voters = '';
+            if($stmt=$myCon->prepare($sql_1))
+            {
+                $stmt->bind_param("i", $id);
+
+                if($stmt->execute())
+                {
+                    $stmt->store_result();
+                    if($stmt->num_rows != 0) {
+                        $stmt->bind_result($old_down_voters); 
+                        
+                        $stmt->fetch(); 
+                    }
+                    else {echo "NO ROWS!<br>"; return false;}
+                }
+                else{
+                    echo "failed to execute 1 <br>";
+                    return false;
+                }
+            }else {echo "FAILED TO PREPARE 1 <br>"; return false;}
+            
+            $arr_old_down_voters = explode(';', $old_down_voters, -1);
+
+            if(in_array($down_voter, $arr_old_down_voters))
+            {
+                //remove downvote
+                $old_down_voters = str_replace($down_voter.';', '', $old_down_voters);
+                $down_voter='';
+            }
+
+            else {$down_voter .= ';';}
+
+            $sql_2 = 'UPDATE comments SET down_voters = ? WHERE id = ?';
+
+            if($stmt=$myCon->prepare($sql_2))
+            {
+                $param1=$old_down_voters . $down_voter;
+                $stmt->bind_param("si", $param1, $id);
+
+                if(!$stmt->execute())
+                {
+                    echo "FAILED TO EXECUTE 2<br>"; return false;
+                }
+
+            }else {echo "FAILED TO PREPARE 2<br>"; return false;}
+
+
+            return strlen($down_voter)>1;
+        }
     }
 ?>

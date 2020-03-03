@@ -86,6 +86,19 @@
             
             echo 'upvote';
         }
+
+        public function downvote($id=-1)
+        {
+            if(!isset($_SESSION['username'])) self::goHome();
+            if($id<0) self::goDashboard();
+
+            if(Comment::downvote($id))
+            {
+                echo 'downvoted';return;
+            }
+
+            echo 'downvote';
+        }
     }
 
 ?>

@@ -94,7 +94,7 @@
                                     ?>
                                         <h6 id=<?php echo 'upvote_'. $arr_comments[$current_post_id][$i]['id']; ?> 
                                         onclick=<?php echo 'upvote(' . $arr_comments[$current_post_id][$i]['id'] . 
-                                        ',)';?>> upvoted </h6>
+                                        ',)';?> style='cursor:pointer'> upvoted </h6>
                                     
                                     <?php
                                     }
@@ -102,7 +102,26 @@
                                         ?>
                                         <h6 id=<?php echo 'upvote_'. $arr_comments[$current_post_id][$i]['id']; ?> 
                                         onclick=<?php echo 'upvote(' . $arr_comments[$current_post_id][$i]['id'] . 
-                                        ')';?>> upvote </h6>
+                                        ')';?> style='cursor:pointer'> upvote </h6>
+                                    <?php
+                                    }
+
+                                    $arr_down_voters = explode(';', $arr_comments[$current_post_id][$i]['down_voters'], -1);
+
+                                    if(in_array($_SESSION['id'], $arr_down_voters))
+                                    {
+                                    ?>
+                                        <h6 id=<?php echo 'downvote_'. $arr_comments[$current_post_id][$i]['id']; ?> 
+                                        onclick=<?php echo 'downvote(' . $arr_comments[$current_post_id][$i]['id'] . 
+                                        ',)';?> style='cursor:pointer'> downvoted </h6>
+                                    
+                                    <?php
+                                    }
+                                    else {
+                                        ?>
+                                        <h6 id=<?php echo 'downvote_'. $arr_comments[$current_post_id][$i]['id']; ?> 
+                                        onclick=<?php echo 'downvote(' . $arr_comments[$current_post_id][$i]['id'] . 
+                                        ')';?> style='cursor:pointer'> downvote </h6>
                                     <?php
                                     }
                                 }
@@ -178,6 +197,19 @@
             }
         };
         xhttp.open("GET", "/ekom/public/comment/upvote"+"/"+comment_id, true);
+        xhttp.send();
+    }
+
+    function downvote(comment_id)
+    {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                document.getElementById('downvote_'+comment_id).innerHTML = xhttp.responseText;
+            }
+        };
+        xhttp.open("GET", "/ekom/public/comment/downvote"+"/"+comment_id, true);
         xhttp.send();
     }
 </script>

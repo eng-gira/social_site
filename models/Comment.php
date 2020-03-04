@@ -206,6 +206,8 @@
                     echo "FAILED TO EXECUTE 2<br>"; return false;
                 }
 
+                echo self::removeOtherVote($id, 'upvote');
+
             }else {echo "FAILED TO PREPARE 2<br>"; return false;}
 
 
@@ -264,10 +266,67 @@
                     echo "FAILED TO EXECUTE 2<br>"; return false;
                 }
 
+                echo self::removeOtherVote($id, 'downvote');
+
             }else {echo "FAILED TO PREPARE 2<br>"; return false;}
 
 
             return strlen($down_voter)>1;
+        }
+    
+        private function removeOtherVote($comment_id, $vote_type)
+        {
+            $myCon = self::connect();
+
+            //if upvoted -> check if was downvoter and remove it
+
+            $sql = "SELECT down_voters FROM comments WHERE id = ?";    
+         
+            if($vote_type=='downvote')
+            {
+                $sql = "SELECT up_voters FROM comments WHERE id = ?";    
+            }
+            else if($vote_type!='upvote') {return false;}
+
+            if($stmt=$myCon->prepare($sql))
+            {
+                $stmt->bind_param('i', $comment_id);
+                
+                $voters = '';
+                $voter = $_SESSION['id'];
+
+                if($stmt->execute())
+                {
+                    $stmt->store_result();
+                    if($stmt->num_rows != 0) {
+                        $stmt->bind_result($voters); 
+                        
+                        $stmt->fetch(); 
+
+                        $arr_voters = explode(';', $voters, -1);
+
+                        if(in_array($voter, $arr_voters))
+                        {
+                            $voters = str_replace($voter.';', '', $voters);
+
+                            $sql_2 = $vote_type=='upvote'?"UPDATE comments SET down_voters = ? WHERE id = ?" : 
+                                "UPDATE comments SET up_voters = ? WHERE id = ?";
+                        
+                            if($stmt2=$myCon->prepare($sql_2))
+                            {
+                                $stmt2->bind_param('si', $voters, $comment_id);
+
+                                if($stmt2->execute())
+                                {
+                                    return true;
+                                }
+                            }   
+                        }
+                        else {return false;}
+                    }               
+                }
+            }
+            return false;
         }
     }
 ?>

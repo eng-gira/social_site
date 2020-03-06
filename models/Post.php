@@ -83,6 +83,70 @@
 
             return $ret;
         }
+
+        public static function upvote($post_id)
+        {
+            $myCon = self::connect();
+            
+            $old_up_voters = '';
+            $old_down_voters = '';
+
+            $sql_1 = "SELECT up_voters, down_voters FROM posts WHERE id = ?";
+
+            if($stmt_1=$myCon->prepare($sql))
+            {
+                $stmt_1->bind_param('i', $post_id);
+
+                if($stmt_1->execute())
+                {
+                    $stmt_1->store_result();
+                    if($stmt_1->num_rows != 0) {
+                        $stmt_1->bind_result($old_up_voters, $old_down_voters);
+                        $stmt_1->fetch();
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else {return false;}
+
+            $up_voter = $_SESSION['id'];
+            $arr_old_up_voters = explode(';', $old_up_voters, -1);
+            $arr_old_down_voters = explode(';', $old_down_voters, -1);
+
+            if(in_array($up_voter, $arr_old_down_voters))
+            {
+                //remove the down vote
+                $old_down_voters = str_replace($up_voter.';', '', $old_down_voters);
+            }
+
+            if(in_array($up_voter, $arr_old_up_voters))
+            {
+                //remove the up vote
+                $old_up_voters = str_replace($up_voter.';', '', $old_up_voters);
+                $up_voter = '';
+            }
+
+            $sql_2 = 'UPDATE posts SET up_voters = ?, down_voters = ? WHERE id = ?';
+
+            if($stmt_2=$myCon->prepare($sql_2))
+            {
+                if(strlen($up_voter>0)) $up_voter.=';';
+
+                $stmt_2->bind_param('ssi', $old_up_voters . $up_voter, $old_down_voters, $post_id);
+
+                if($stmt_2->execute())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
 ?>

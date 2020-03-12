@@ -70,13 +70,14 @@
             $ret = array();
             $ret_counter = 0;
             $myCon = self::connect();
-            $sql = "SELECT id, title, body FROM posts WHERE author = $id ORDER BY id DESC";
+            $sql = "SELECT id, title, body, up_voters, down_voters FROM posts WHERE author = $id ORDER BY id DESC";
 
             $result = $myCon->query($sql);
             if($result->num_rows!=0)
             {
                 while($row = $result->fetch_assoc()) {
-                    $ret[$ret_counter] = array('id'=>$row['id'], 'title'=>$row['title'], 'body' => $row['body']);
+                    $ret[$ret_counter] = array('id'=>$row['id'], 'title'=>$row['title'], 'body' => $row['body'], 
+                'up_voters' => $row['up_voters'], 'down_voters' => $row['down_voters']);
                     $ret_counter++;
                 }   
             }
@@ -93,7 +94,7 @@
 
             $sql_1 = "SELECT up_voters, down_voters FROM posts WHERE id = ?";
 
-            if($stmt_1=$myCon->prepare($sql))
+            if($stmt_1=$myCon->prepare($sql_1))
             {
                 $stmt_1->bind_param('i', $post_id);
 
@@ -136,9 +137,9 @@
 
             if($stmt_2=$myCon->prepare($sql_2))
             {
-                if(strlen($up_voter>0)) $up_voter.=';';
-
-                $stmt_2->bind_param('ssi', $old_up_voters . $up_voter, $old_down_voters, $post_id);
+                if(strlen($up_voter)>0) $up_voter.=';';
+                $old_up_voters .= $up_voter;
+                $stmt_2->bind_param('ssi', $old_up_voters, $old_down_voters, $post_id);
 
                 if($stmt_2->execute())
                 {
@@ -147,6 +148,7 @@
             }
             return false;
         }
+    
     }
 
 ?>

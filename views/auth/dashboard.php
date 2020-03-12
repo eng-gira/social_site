@@ -44,11 +44,22 @@
                     echo "<h6>". $arr_my_posts[$i]['body'] . "</h6>";
                     echo "<hr>";
                     $delete_link = "/ekom/public/post/deletePost/" . $arr_my_posts[$i]['id'];
+                    
                     $current_post_id = $arr_my_posts[$i]['id'];
+                    
                     $all_comments_for_this = 'all_comments_for_' . $current_post_id;
+
+                    $upvote_post_js_func= 'upvote_post(' . $current_post_id.')';
+                    $downvote_post_js_func = 'downvote_post(' . $current_post_id .')';
                     ?>
                     <a href=<?php echo "/ekom/public/post/editPost/" . $arr_my_posts[$i]['id']; ?>> Edit </a> | 
                     <button onclick='confirmPostDeletion("<?php echo $delete_link; ?>")')>Delete</button>
+                    
+                    <p id=<?php echo 'upvote_post_'.$current_post_id;?> style='cursor:pointer' 
+                        onclick='<?php echo $upvote_post_js_func; ?>'> Upvote</p>
+                    <p id=<?php echo 'downvote_post_'.$current_post_id;?> style='cursor:pointer' 
+                        onclick='<?php echo $downvote_post_js_func; ?>'> Downvote</p>
+                    
                     <?php
                     echo "<hr>";
                     ?>
@@ -187,6 +198,32 @@
         xhttp.send();
     }
 
+    function upvote_post(post_id)
+    {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                document.getElementById('upvote_post_'+post_id).innerHTML = xhttp.responseText;
+            }
+        };
+        xhttp.open("GET", "/ekom/public/post/upvote"+"/"+post_id, true);
+        xhttp.send();
+    }
+
+    function downvote_post(post_id)
+    {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                document.getElementById('downvote_post_'+post_id).innerHTML = xhttp.responseText;
+            }
+        };
+        xhttp.open("GET", "/ekom/public/post/downvote"+"/"+post_id, true);
+        xhttp.send();
+    }
+
     function upvote(comment_id)
     {
         let xhttp = new XMLHttpRequest();
@@ -212,4 +249,5 @@
         xhttp.open("GET", "/ekom/public/comment/downvote"+"/"+comment_id, true);
         xhttp.send();
     }
+
 </script>

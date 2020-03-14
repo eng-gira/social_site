@@ -63,6 +63,7 @@
             $arr_comments = Comment::showCommentsForPost($post_id);
 
             $comments = '';
+            if(!is_array($arr_comments)) return $comments;
 
             for($i=0;$i<count($arr_comments);$i++)
             {

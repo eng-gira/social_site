@@ -89,7 +89,7 @@
             if(!isset($_SESSION['username'])) self::goHome();
             if($id<0) self::goDashboard();
 
-            if(Post::upvote($id))
+            if(Post::upvote($id)=='upvoted')
             {
                 echo 'upvoted'; return;
             }

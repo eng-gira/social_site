@@ -51,27 +51,34 @@
 
                     $upvote_post_js_func= 'upvote_post(' . $current_post_id.')';
                     $downvote_post_js_func = 'downvote_post(' . $current_post_id .')';
+
+                    $up_voters=explode(';', $arr_my_posts[$i]['up_voters'], -1);
+                    $down_voters=explode(';', $arr_my_posts[$i]['down_voters'], -1);
+
+
+                    $upvoted= in_array($_SESSION['id'], $up_voters);
+                    $downvoted = in_array($_SESSION['id'], $down_voters);
                     ?>
                     <a href=<?php echo "/ekom/public/post/editPost/" . $arr_my_posts[$i]['id']; ?>> Edit </a> | 
                     <button onclick='confirmPostDeletion("<?php echo $delete_link; ?>")')>Delete</button>
                     
                     <p id=<?php echo 'upvote_post_'.$current_post_id;?> style='cursor:pointer' 
-                        onclick='<?php echo $upvote_post_js_func; ?>'> Upvote</p>
+                        onclick='<?php echo $upvote_post_js_func; ?>'><?php echo $upvoted?'upvoted':'upvote'; ?> </p>
                     <p id=<?php echo 'downvote_post_'.$current_post_id;?> style='cursor:pointer' 
-                        onclick='<?php echo $downvote_post_js_func; ?>'> Downvote</p>
+                        onclick='<?php echo $downvote_post_js_func; ?>'><?php echo $downvoted?'downvoted':'downvote'; ?></p>
                     
                     <?php
                     echo "<hr>";
                     ?>
                     
-                    <input type="text" id="comment_body" name="comment_body"/>
+                    <input type="text" id=<?php echo "comment_body_post_".$current_post_id;?> name="comment_body"/>
                     <button type="submit" onclick="comment(<?php echo $current_post_id; ?>)">Comment</button>
                     
                     <hr>
                     <div id='<?php echo $all_comments_for_this; ?>'>
                         <?php
 
-                        if(count($arr_comments)>0)
+                        if(count($arr_comments)>=$current_post_id)
                         {
                             for($i=0;$i<count($arr_comments[$current_post_id]); $i++)
                             {
@@ -165,7 +172,7 @@
 
     function comment(post_id)
     {
-        let comment_body = document.getElementById('comment_body').value;
+        let comment_body = document.getElementById('comment_body_post_'+post_id).value;
 
         if(comment_body.length<1) {alert("empty comment"); return false;}
 
@@ -205,6 +212,8 @@
             if (this.readyState == 4 && this.status == 200) 
             {
                 document.getElementById('upvote_post_'+post_id).innerHTML = xhttp.responseText;
+                document.getElementById('downvote_post_'+post_id).innerHTML = "downvote";
+
             }
         };
         xhttp.open("GET", "/ekom/public/post/upvote"+"/"+post_id, true);
@@ -218,6 +227,7 @@
             if (this.readyState == 4 && this.status == 200) 
             {
                 document.getElementById('downvote_post_'+post_id).innerHTML = xhttp.responseText;
+                document.getElementById('upvote_post_'+post_id).innerHTML = "upvote";
             }
         };
         xhttp.open("GET", "/ekom/public/post/downvote"+"/"+post_id, true);

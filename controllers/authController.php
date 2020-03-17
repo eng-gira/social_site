@@ -114,6 +114,17 @@
                 self::goHome();
             }
         }
+
+        public function follow($id_to_follow=-1)
+        {
+            if(!isset($_SESSION['username'])) self::goHome();
+            if($id_to_follow=-1) self::goDashboard();
+
+            if(User::follow($id_to_follow)=='follow') {echo 'unfollow'; return;}
+            else if(User::follow($id_to_follow)=='unfollow') {echo 'follow'; return;}
+
+            echo 'error';
+        }
     }
 
 ?>

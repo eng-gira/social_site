@@ -107,7 +107,7 @@
 
             $this_id= $_SESSION['id'];
 
-            $sql = 'SELECT id, username FROM users WHERE id <> $this_id';
+            $sql = 'SELECT id, username FROM users WHERE id <>'. $this_id;
 
             $arr_users=array();
 
@@ -116,7 +116,7 @@
             if ($result->num_rows > 0) {
                 // output data of each row
                 while($row = $result->fetch_assoc()) {
-                    $arr_users[count($arr_users)] = array($row['id'], $row['username']);
+                    $arr_users[count($arr_users)] = array('id'=>$row['id'], 'username'=>$row['username']);
                 }
 
 

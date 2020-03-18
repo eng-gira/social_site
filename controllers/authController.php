@@ -88,18 +88,22 @@
             return false;
         }
 
-        public function dashboard()
+        public function dashboard($id=-1)
         {
             //don't encode parameter here to avoid confusing errors
             if(!isset($_SESSION['username'])) {header("Location: logIn"); return false;}
+            if($id==-1) $id=$_SESSION['id'];
             
             //show all posts by the authenticated
             $all_posts = Post::showPostsFor(User::findUserByUsername($_SESSION['username']));
             
             $all_comments_per_post = Comment::showCommentsForGroup($all_posts);
-            
-            new view('auth' . DIRECTORY_SEPARATOR . 'dashboard', ['all_posts' => $all_posts, 
-            'all_comments_per_post' => $all_comments_per_post]);
+
+            $all_users = User::showAllUsers();
+            $all_users = $all_users == false ? [] : $all_users;
+
+            new view('auth' . DIRECTORY_SEPARATOR . 'dashboard', ['id_visited'=>$id, 'all_posts' => $all_posts, 
+            'all_comments_per_post' => $all_comments_per_post, 'all_users' => $all_users]);
         }
 
         public function logOut()

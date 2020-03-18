@@ -26,13 +26,41 @@
 
 
             <?php
+                $id_visited= $this->getData()['id_visited'];
+                if($id_visited!=$_SESSION['id'])
+                {
+                    ?>
+                    <p style='cursor:pointer' onclick=<?php echo 'follow('.$id_visited.')'; ?>> Follow </p>
+                    <?php
+                }
                 $arr_my_posts = $this->getData()['all_posts'];
                 $arr_comments = $this->getData()['all_comments_per_post'];
+                $arr_all_users = $this->getData()['all_users'];
+
+                // if(count($arr_all_users)>0)
+                // {
+                //     echo "<b>Other users: </b>";
+                //     for($i=0; $i < count($arr_all_users); $i++)
+                //     {
+                //         $current_username = $arr_all_users[$i]['username'];
+                //         $current_id = $arr_all_users[$i]['id'];
+                //        ?>
+                            <!-- <a style='display:inline-block' href=<?php 
+                //             echo '/ekom/public/auth/dasboard/'.$current_id; 
+                //         ?>
+                             >  -->
+                             <?php 
+                //                 echo $current_username; 
+                //             ?>
+                             <!-- </a>                         -->
+                         <?php
+                //     }
+                // }
 
                 if(count($arr_my_posts)>0)
                 {
                 ?>
-                    <h4> Your Posts </h4><br>
+                    <h4> Posts </h4><br>
                 <?php
                 }
                 for($i=0; $i<count($arr_my_posts); $i++)

@@ -122,10 +122,10 @@
         public function follow($id_to_follow=-1)
         {
             if(!isset($_SESSION['username'])) self::goHome();
-            if($id_to_follow=-1) self::goDashboard();
+            if($id_to_follow==-1) self::goDashboard();
 
-            if(User::follow($id_to_follow)=='follow') {echo 'unfollow'; return;}
-            else if(User::follow($id_to_follow)=='unfollow') {echo 'follow'; return;}
+            $ret = User::follow($id_to_follow);
+            if($ret=='follow' || $ret=='unfollow') {echo $ret; return;}
 
             echo 'error';
         }

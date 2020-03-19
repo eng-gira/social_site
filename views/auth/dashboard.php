@@ -17,12 +17,7 @@
             </div>
         </nav> <br><br><br>
         <main>
-            <h4> New Post </h4><br><br>
-            <form action="/ekom/public/post/newPost" method="POST">
-                Post Title: <input type="text" name="post_title" required/> <br><br>
-                Post Body: <input name="post_body" style="height:200px;width:200px" required/> <br><br>
-                <button type="submit"> Submit Post </button>
-            </form><br><hr><br>
+            
 
 
             <?php
@@ -30,32 +25,43 @@
                 if($id_visited!=$_SESSION['id'])
                 {
                     ?>
-                    <p style='cursor:pointer' onclick=<?php echo 'follow('.$id_visited.')'; ?>> Follow </p>
+                    <p id="follow_btn" style='cursor:pointer' onclick=<?php echo 'follow('.$id_visited.')'; ?>> 
+                        Follow </p>
+                    <?php
+                }
+                else {
+                    ?>
+                    <h4> New Post </h4><br><br>
+                    <form action="/ekom/public/post/newPost" method="POST">
+                        Post Title: <input type="text" name="post_title" required/> <br><br>
+                        Post Body: <input name="post_body" style="height:200px;width:200px" required/> <br><br>
+                        <button type="submit"> Submit Post </button>
+                    </form><br><hr><br>
                     <?php
                 }
                 $arr_my_posts = $this->getData()['all_posts'];
                 $arr_comments = $this->getData()['all_comments_per_post'];
                 $arr_all_users = $this->getData()['all_users'];
 
-                // if(count($arr_all_users)>0)
-                // {
-                //     echo "<b>Other users: </b>";
-                //     for($i=0; $i < count($arr_all_users); $i++)
-                //     {
-                //         $current_username = $arr_all_users[$i]['username'];
-                //         $current_id = $arr_all_users[$i]['id'];
-                //        ?>
-                            <!-- <a style='display:inline-block' href=<?php 
-                //             echo '/ekom/public/auth/dasboard/'.$current_id; 
-                //         ?>
-                             >  -->
+                if(count($arr_all_users)>0)
+                {
+                    echo "<b>Other users: </b>";
+                    for($i=0; $i < count($arr_all_users); $i++)
+                    {
+                        $current_username = $arr_all_users[$i]['username'];
+                        $current_id = $arr_all_users[$i]['id'];
+                       ?>
+                             <a style='display:inline-block' href=<?php 
+                            echo '/ekom/public/auth/dashboard/'.$current_id; 
+                        ?>
+                             >  
                              <?php 
-                //                 echo $current_username; 
-                //             ?>
-                             <!-- </a>                         -->
+                                echo $current_username; 
+                              ?>
+                             </a>                        
                          <?php
-                //     }
-                // }
+                    }
+                }
 
                 if(count($arr_my_posts)>0)
                 {
@@ -285,6 +291,21 @@
             }
         };
         xhttp.open("GET", "/ekom/public/comment/downvote"+"/"+comment_id, true);
+        xhttp.send();
+    }
+
+    function follow(to_follow)
+    {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange= function()
+        {
+            if(this.readyState==4 && this.status==200)
+            {
+                document.getElementById("follow_btn").innerHTML = xhttp.responseText;
+            }
+        };
+
+        xhttp.open("GET", "/ekom/public/auth/follow/"+to_follow, true);
         xhttp.send();
     }
 

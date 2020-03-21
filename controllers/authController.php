@@ -102,7 +102,9 @@
             $all_users = User::showAllUsers();
             $all_users = $all_users == false ? [] : $all_users;
 
-            new view('auth' . DIRECTORY_SEPARATOR . 'dashboard', ['id_visited'=>$id, 'all_posts' => $all_posts, 
+            $f_unf = User::f_unf($id);
+
+            new view('auth' . DIRECTORY_SEPARATOR . 'dashboard', ['id_visited'=>[$id, $f_unf], 'all_posts' => $all_posts, 
             'all_comments_per_post' => $all_comments_per_post, 'all_users' => $all_users]);
         }
 

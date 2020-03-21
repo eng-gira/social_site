@@ -21,12 +21,14 @@
 
 
             <?php
-                $id_visited= $this->getData()['id_visited'];
+                $id_visited= $this->getData()['id_visited'][0];
+                $f_unf = $this->getData()['id_visited'][1];
                 if($id_visited!=$_SESSION['id'])
                 {
                     ?>
-                    <p id="follow_btn" style='cursor:pointer' onclick=<?php echo 'follow('.$id_visited.')'; ?>> 
-                        Follow </p>
+                    <p id="follow_btn" style='cursor:pointer;width:45px' onclick=<?php echo 'follow('.$id_visited.')'; ?>> 
+                        <?php echo $f_unf;?> 
+                    </p>
                     <?php
                 }
                 else {
@@ -114,6 +116,7 @@
 
                         if(count($arr_comments)>=$current_post_id)
                         {
+                           
                             for($i=0;$i<count($arr_comments[$current_post_id]); $i++)
                             {
                                 echo '<h5>' . $arr_comments[$current_post_id][$i]['author'] . '</h5>';

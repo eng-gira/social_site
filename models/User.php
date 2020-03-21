@@ -173,8 +173,46 @@
                     }
                 }
             }
-
+        
             return false;
         }
+
+        public static function f_unf($id)
+        {
+            $myCon = self::connect();
+
+            $sql = "SELECT followers FROM users WHERE id = ?";
+
+            $operation = 'follow';
+            $visitor = $_SESSION['id'];
+
+            if($stmt=$myCon->prepare($sql))
+            {
+                $stmt->bind_param("i", $id);
+                if($stmt->execute())
+                {
+                    $stmt->store_result();
+                    if($stmt->num_rows != 0) {
+                        $followers = '';
+
+                        $stmt->bind_result($followers); 
+                        $stmt->fetch();
+
+                        $arr_followers = explode(';', $followers, -1);
+
+                        if(in_array($visitor, $arr_followers))
+                        {
+                            return 'unfollow';
+                        }
+
+                        else {return 'follow';}
+                    }
+                }
+            }
+
+
+            return 'error';
+        }
+
     }
 ?>

@@ -44,14 +44,14 @@
             return false;
         }
 
-        public static function getPostById($id)
+        public static function getPostOfId($id)
         {
             $myCon = self::connect();
             $sql = "SELECT * FROM posts WHERE id = $id";
             $post = array();
             $result = $myCon->query($sql);
 
-            if($reuslt->num_rows==1)
+            if($result->num_rows==1)
             {
                 while($row=$result->fetch_assoc())
                 {

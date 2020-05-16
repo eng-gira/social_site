@@ -5,7 +5,8 @@
         public function index()
         {
             // echo "index() from homeController. id = ". $id . ", name = ". $name . "<br>";
-            $view = new View('home' . DIRECTORY_SEPARATOR . 'index');
+            $view = new View('home' . DIRECTORY_SEPARATOR . 'index', 
+                ['all_posts'=>Post::getAllPosts()]);
         }
 
         public function about()

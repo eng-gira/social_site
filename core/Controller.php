@@ -5,16 +5,16 @@
     {
         protected static function goHome()
         {
-            header("Location: /ekom/public/home");
+            header("Location: /social_site/public/home");
             return false;
         }
 
-        protected static function goDashboard()
+        protected static function goProfile()
         {
             //double check 
             if(!isset($_SESSION['username'])) self::goHome();
 
-            header("Location: /ekom/public/auth/dashboard");
+            header("Location: /social_site/public/auth/profile");
             return false;
         }
     }

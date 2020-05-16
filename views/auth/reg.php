@@ -42,4 +42,4 @@
     <button type="submit"> Register </button>
 </form>
 
-<p> Already have an account? <a href="/ekom/public/auth/logIn"> Log In </a></p>
+<p> Already have an account? <a href="/social_site/public/auth/logIn"> Log In </a></p>

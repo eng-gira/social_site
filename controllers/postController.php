@@ -30,7 +30,7 @@
         {
             if(!isset($_SESSION['username']) || $id < 0)
             {
-                header("Location: /ekom/public/home");
+                header("Location: /social_site/public/home");
                 return false;
             }
             
@@ -42,7 +42,7 @@
         {
             if(!isset($_SESSION['username']) || $id < 0)
             {
-                header("Location: /ekom/public/home");
+                header("Location: /social_site/public/home");
                 return false;
             }
 
@@ -51,17 +51,17 @@
 
             if(strlen($new_title) < 1 || strlen($new_body) <1) 
             {
-                header("Location: /ekom/public/auth/dashboard");
+                header("Location: /social_site/public/auth/dashboard");
                 return false;
             }
 
             if(!Post::updatePost($id, $new_title, $new_body))
             {
-                header("Location: /ekom/public/auth/dashboard");
+                header("Location: /social_site/public/auth/dashboard");
                 return false;
             }
 
-            header("Location: /ekom/public/auth/dashboard");
+            header("Location: /social_site/public/auth/dashboard");
             return true;
         }
         
@@ -70,13 +70,13 @@
         {
             if(!isset($_SESSION['username']) || $id < 0)
             {
-                header("Location: /ekom/public/home");
+                header("Location: /social_site/public/home");
                 return false;
             }
 
             if(!Post::deletePost($id)) 
             {
-                header("Location: /ekom/public/auth/dashboard");
+                header("Location: /social_site/public/auth/dashboard");
                 return false;
             }
 
@@ -87,7 +87,7 @@
         public function upvote($id=-1)
         {
             if(!isset($_SESSION['username'])) self::goHome();
-            if($id<0) self::goDashboard();
+            if($id<0) self::goProfile();
 
             if(Post::upvote($id)=='upvoted')
             {
@@ -100,7 +100,7 @@
         public function downvote($id=-1)
         {
             if(!isset($_SESSION['username'])) self::goHome();
-            if($id<0) self::goDashboard();
+            if($id<0) self::goProfile();
 
             if(Post::downvote($id))
             {

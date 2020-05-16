@@ -23,13 +23,13 @@
                 return true;
             }
 
-            self::goDashboard();
+            self::goProfile();
         }
 
         public function editComment($id=-1)
         {
             if(!isset($_SESSION['username'])) self::goHome();
-            if($id<0) self::goDashboard();
+            if($id<0) self::goProfile();
 
             new View('auth' . DIRECTORY_SEPARATOR . 'editComment', ['comment_id' => $id]);
         }
@@ -40,7 +40,7 @@
             
             if(!isset($_POST['new_comment_body']) || $id<0)
             {
-                self::goDashboard();
+                self::goProfile();
             }
 
             $new_comment_body = htmlspecialchars($_POST['new_comment_body']);
@@ -50,13 +50,13 @@
                 echo 'Error<br>';
             }
 
-            self::goDashboard();
+            self::goProfile();
         }
 
         public function deleteComment($post_id = -1, $comment_id=-1)
         {
             if(!isset($_SESSION['username'])) self::goHome();
-            if($post_id< 0 || $comment_id <0) self::goDashboard();
+            if($post_id< 0 || $comment_id <0) self::goProfile();
 
             Comment::deleteComment($comment_id);
 

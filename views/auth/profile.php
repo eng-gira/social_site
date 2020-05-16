@@ -8,12 +8,12 @@
     <head></head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="/ekom/public/home"> Home </a>
-            <a class="navbar-brand" href="/ekom/public/home/about"> About </a>
+            <a class="navbar-brand" href="/social_site/public/home"> Home </a>
+            <a class="navbar-brand" href="/social_site/public/home/about"> About </a>
             
             <div class="container justify-content-md-end">            
-                <a class="navbar-brand" href="/ekom/public/auth/dashboard"> <?php echo $_SESSION['username']; ?> </a>
-                <a class="navbar-brand" href="/ekom/public/auth/logOut"> Log Out </a>
+                <a class="navbar-brand" href="/social_site/public/auth/dashboard"> <?php echo $_SESSION['username']; ?> </a>
+                <a class="navbar-brand" href="/social_site/public/auth/logOut"> Log Out </a>
             </div>
         </nav> <br><br><br>
         <main>
@@ -35,7 +35,7 @@
                 else {
                     ?>
                     <h4> New Post </h4><br><br>
-                    <form action="/ekom/public/post/newPost" method="POST">
+                    <form action="/social_site/public/post/newPost" method="POST">
                         Post Title: <input type="text" name="post_title" required/> <br><br>
                         Post Body: <input name="post_body" style="height:200px;width:200px" required/> <br><br>
                         <button type="submit"> Submit Post </button>
@@ -55,7 +55,7 @@
                         $current_id = $arr_all_users[$i]['id'];
                        ?>
                              <a style='display:inline-block' href=<?php 
-                            echo '/ekom/public/auth/dashboard/'.$current_id; 
+                            echo '/social_site/public/auth/dashboard/'.$current_id; 
                         ?>
                              >  
                              <?php 
@@ -80,7 +80,7 @@
                     echo "<h5>". $arr_my_posts[$i]['title'] . "</h5>";
                     echo "<h6>". $arr_my_posts[$i]['body'] . "</h6>";
                     echo "<hr>";
-                    $delete_link = "/ekom/public/post/deletePost/" . $arr_my_posts[$i]['id'];
+                    $delete_link = "/social_site/public/post/deletePost/" . $arr_my_posts[$i]['id'];
                     
                     $current_post_id = $arr_my_posts[$i]['id'];
                     
@@ -96,7 +96,7 @@
                     $upvoted= in_array($_SESSION['id'], $up_voters);
                     $downvoted = in_array($_SESSION['id'], $down_voters);
                     ?>
-                    <a href=<?php echo "/ekom/public/post/editPost/" . $arr_my_posts[$i]['id']; ?>> Edit </a> | 
+                    <a href=<?php echo "/social_site/public/post/editPost/" . $arr_my_posts[$i]['id']; ?>> Edit </a> | 
                     <button onclick='confirmPostDeletion("<?php echo $delete_link; ?>")')>Delete</button>
                     
                     <p id=<?php echo 'upvote_post_'.$current_post_id;?> style='cursor:pointer;width:50px' 
@@ -127,7 +127,7 @@
                                 ?>
                                 <h6> 
                                     <a href=
-                                    <?php echo '/ekom/public/comment/editComment/'.
+                                    <?php echo '/social_site/public/comment/editComment/'.
                                     $arr_comments[$current_post_id][$j]['id'];?>
                                     >Edit</a> or 
                                     <p style='cursor:pointer;' onclick=
@@ -220,7 +220,7 @@
                 document.getElementById("all_comments_for_"+post_id).innerHTML = new_comment + holder;
             }
         };
-        xhttp.open("POST","/ekom/public/comment/newComment", true);
+        xhttp.open("POST","/social_site/public/comment/newComment", true);
         xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhttp.send("comment_body="+comment_body+"&post_id="+post_id);
     }
@@ -236,7 +236,7 @@
                 document.getElementById("all_comments_for_"+post_id).innerHTML = xhttp.responseText;
             }
         };
-        xhttp.open("GET", "/ekom/public/comment/deleteComment/"+post_id+"/"+comment_id, true);
+        xhttp.open("GET", "/social_site/public/comment/deleteComment/"+post_id+"/"+comment_id, true);
         xhttp.send();
     }
 
@@ -251,7 +251,7 @@
 
             }
         };
-        xhttp.open("GET", "/ekom/public/post/upvote"+"/"+post_id, true);
+        xhttp.open("GET", "/social_site/public/post/upvote"+"/"+post_id, true);
         xhttp.send();
     }
 
@@ -265,7 +265,7 @@
                 document.getElementById('upvote_post_'+post_id).innerHTML = "upvote";
             }
         };
-        xhttp.open("GET", "/ekom/public/post/downvote"+"/"+post_id, true);
+        xhttp.open("GET", "/social_site/public/post/downvote"+"/"+post_id, true);
         xhttp.send();
     }
 
@@ -278,7 +278,7 @@
                 document.getElementById('upvote_'+comment_id).innerHTML = xhttp.responseText;
             }
         };
-        xhttp.open("GET", "/ekom/public/comment/upvote"+"/"+comment_id, true);
+        xhttp.open("GET", "/social_site/public/comment/upvote"+"/"+comment_id, true);
         xhttp.send();
     }
 
@@ -291,7 +291,7 @@
                 document.getElementById('downvote_'+comment_id).innerHTML = xhttp.responseText;
             }
         };
-        xhttp.open("GET", "/ekom/public/comment/downvote"+"/"+comment_id, true);
+        xhttp.open("GET", "/social_site/public/comment/downvote"+"/"+comment_id, true);
         xhttp.send();
     }
 
@@ -306,7 +306,7 @@
             }
         };
 
-        xhttp.open("GET", "/ekom/public/auth/follow/"+to_follow, true);
+        xhttp.open("GET", "/social_site/public/auth/follow/"+to_follow, true);
         xhttp.send();
     }
 

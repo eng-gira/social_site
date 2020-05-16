@@ -16,4 +16,4 @@
     <button type="submit"> Login </button>
 </form>
 
-<p> Don't have an account? <a href="/ekom/public/auth/reg"> Register </a></p>
+<p> Don't have an account? <a href="/social_site/public/auth/reg"> Register </a></p>

@@ -1,5 +1,5 @@
 <?php
-    $link = '/ekom/public/comment/updateComment/' . $this->getData()['comment_id'];
+    $link = '/social_site/public/comment/updateComment/' . $this->getData()['comment_id'];
     echo $link . '<br>';
 ?>
 
@@ -8,4 +8,4 @@
     <button type="submit"> Submit Update </button>
 </form>
 
-<a href="/ekom/public/auth/dashboard"> Cancel </a>
+<a href="/social_site/public/auth/dashboard"> Cancel </a>

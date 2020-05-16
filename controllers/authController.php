@@ -6,7 +6,7 @@
         {
             if(isset($_SESSION['username']))
             {
-                self::goDashboard();
+                self::goProfile();
             }
             new view('auth' . DIRECTORY_SEPARATOR . 'reg', ['note' => $note]);
         }
@@ -15,7 +15,7 @@
         {
             if(isset($_SESSION['username']))
             {   
-                self::goDashboard();
+                self::goProfile();
             }
             new view('auth' . DIRECTORY_SEPARATOR . 'logIn', ['note' => $note]);
         }
@@ -76,7 +76,7 @@
 
                 echo "AUTHENTICATED!! <br>";
 
-                self::goDashboard();
+                self::goProfile();
                 
                 return; //safety
             }
@@ -88,7 +88,7 @@
             return false;
         }
 
-        public function dashboard($id=-1)
+        public function profile($id=-1)
         {
             //don't encode parameter here to avoid confusing errors
             if(!isset($_SESSION['username'])) {header("Location: logIn"); return false;}
@@ -104,7 +104,8 @@
 
             $f_unf = User::f_unf($id);
 
-            new view('auth' . DIRECTORY_SEPARATOR . 'dashboard', ['id_visited'=>[$id, $f_unf], 'all_posts' => $all_posts, 
+            new view('auth' . DIRECTORY_SEPARATOR . 'profile', ['id_visited'=>[$id, $f_unf], 
+            'all_posts' => $all_posts, 
             'all_comments_per_post' => $all_comments_per_post, 'all_users' => $all_users]);
         }
 

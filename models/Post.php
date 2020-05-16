@@ -212,7 +212,36 @@
             }
             return false;
         }
-    
+
+        public static function getAllPosts()
+        {
+            $myCon = self::connect();
+
+            $sql_get_all_posts = 'SELECT posts.title, posts.body, posts.up_voters, 
+            posts.down_voters, users.username FROM users INNER JOIN posts ON posts.author=users.id';
+
+            $result = $myCon->query($sql_get_all_posts);
+
+            if($result->num_rows>0)
+            {
+                $posts=array();
+                while($row=$result->fetch_assoc())
+                {
+                    $posts[count($posts)]= [
+                        'post_title'=>$row['title'], 'post_body'=>$row['body'], 
+                        'post_up_voters'=>$row['up_voters'], 'post_down_voters'=>$row['down_voters'], 
+                        'post_author'=>$row['username']
+                    ];
+                }
+
+                return $posts;
+            }
+
+            else
+            {
+                return 'Couldnt get results.';
+            }
+        }
     }
 
 ?>

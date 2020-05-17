@@ -1,17 +1,21 @@
 <?php
 
-    class homeController extends Controller
+    class pagesController extends Controller
     {
         public function index()
         {
-            // echo "index() from homeController. id = ". $id . ", name = ". $name . "<br>";
-            $view = new View('home' . DIRECTORY_SEPARATOR . 'index', 
+            new View('home', 
                 ['all_posts'=>Post::getAllPosts()]);
         }
 
         public function about()
         {
-            echo "ABOUT<br>";
+            new View('about');
+        }
+
+        public function settings()
+        {
+            
         }
 
         public function pageNotFound()

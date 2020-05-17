@@ -217,8 +217,9 @@
         {
             $myCon = self::connect();
 
-            $sql_get_all_posts = 'SELECT posts.title, posts.body, posts.up_voters, 
-            posts.down_voters, users.username FROM users INNER JOIN posts ON posts.author=users.id';
+            $sql_get_all_posts = 'SELECT posts.id, posts.title, posts.body, posts.up_voters, 
+            posts.down_voters, users.username FROM users INNER JOIN posts ON posts.author=users.id ORDER BY 
+            posts.id DESC';
 
             $result = $myCon->query($sql_get_all_posts);
 
@@ -228,6 +229,7 @@
                 while($row=$result->fetch_assoc())
                 {
                     $posts[count($posts)]= [
+                        'post_id'=>$row['id'],
                         'post_title'=>$row['title'], 'post_body'=>$row['body'], 
                         'post_up_voters'=>$row['up_voters'], 'post_down_voters'=>$row['down_voters'], 
                         'post_author'=>$row['username']

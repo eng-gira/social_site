@@ -5,7 +5,7 @@
     {
         protected static function goHome()
         {
-            header("Location: /social_site/public/home");
+            header("Location: /social_site/public/");
             return false;
         }
 

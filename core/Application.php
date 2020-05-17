@@ -2,7 +2,7 @@
 
     class Application
     {
-        private $controller = "homeController";
+        private $controller = "pagesController";
         private $action = "index";
         private $params = array();
 
@@ -19,13 +19,13 @@
                 else
                 {
                     echo "action doesn't exist<br>";
-                    call_user_func_array(['homeController','pageNotFound'],[]);
+                    call_user_func_array(['pagesController','pageNotFound'],[]);
                 }
             }
             else 
             {
                 echo "controller (" . $this->controller . ") doesn't exist <br>";
-                call_user_func_array(['homeController','pageNotFound'],[]);
+                call_user_func_array(['pagesController','pageNotFound'],[]);
             }
         }
 
@@ -37,7 +37,7 @@
             if(!empty($request))
             {
                 $els = substr($request, 0, 1) == "/" ? explode("/", substr($request,1)) : explode("/", $request);
-                $this->controller=isset($els[0])? $els[0] . "Controller" : 'homeController';
+                $this->controller=isset($els[0])? $els[0] . "Controller" : 'pagesController';
                 $this->action=isset($els[1])? $els[1] : 'index';
                 unset($els[0], $els[1]);
                 $this->params = !empty($els) ? array_values($els) : [];

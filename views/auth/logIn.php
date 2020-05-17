@@ -1,3 +1,6 @@
+<?php include('C:\xampp\htdocs\social_site\inc\navbar.php');?>
+
+
 <?php
 
     $err_logIn = '';

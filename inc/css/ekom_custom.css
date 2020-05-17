@@ -2,3 +2,15 @@
 {
     background-color: #e0ebeb;
 }
+
+.post_title
+{
+    font-weight: bold !important;
+    font-size: 25px !important;
+}
+
+.post_body
+{
+    font-weight: lighter !important;
+    font-size: 13px !important;
+}

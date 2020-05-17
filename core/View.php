@@ -3,7 +3,7 @@
     {
         private $data;
 
-        public function __construct($file = "home" . DIRECTORY_SEPARATOR . "index", $data=array())
+        public function __construct($file = "home", $data=array())
         {
             $this->data = $data;
 

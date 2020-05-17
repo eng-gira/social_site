@@ -1,4 +1,5 @@
-<?php
+<?php include('C:\xampp\htdocs\social_site\inc\navbar.php');
+
     $note='';
     if(strlen($this->getData()['note']) > 0)
     {

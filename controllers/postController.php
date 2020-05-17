@@ -2,7 +2,16 @@
 
     class postController extends Controller
     {
-        public function newPost()
+        public function new()
+        {
+            if(!isset($_SESSION['username']))
+            {
+                self::goHome();
+            }
+            new View('post'. DIRECTORY_SEPARATOR .'new_post');
+        }
+
+        public function insert()
         {
             if(!isset($_SESSION['username']))
             {
@@ -15,18 +24,17 @@
 
             if(strlen($post_title) < 1 || strlen($post_body) < 1 || $post_author < 0)
             {
-                header("Location: ../home");
+                self::goHome();
                 return false;
             }
-
             if(Post::insertPost($post_title, $post_body, $post_author))
             {
-                header("Location: ../auth/dashboard");
+                self::goProfile();
                 return true;
             }
         }
  
-        public function editPost($id=-1)
+        public function edit($id=-1)
         {
             if(!isset($_SESSION['username']) || $id < 0)
             {
@@ -38,7 +46,7 @@
             
         }
 
-        public function updatePost($id=-1)
+        public function update($id=-1)
         {
             if(!isset($_SESSION['username']) || $id < 0)
             {
@@ -66,7 +74,7 @@
         }
         
         
-        public function deletePost($id=-1)
+        public function delete($id=-1)
         {
             if(!isset($_SESSION['username']) || $id < 0)
             {

@@ -58,7 +58,7 @@
                 $_SESSION['username']= $username;
                 $_SESSION['id']=intval(User::findUserByUsername($username));
                 
-                self::goDashboard();
+                self::goProfile();
             }
 
             return "Failed";
@@ -95,9 +95,9 @@
             if($id==-1) $id=$_SESSION['id'];
             
             //show all posts by the authenticated
-            $all_posts = Post::showPostsFor(User::findUserByUsername($_SESSION['username']));
+            $posts_of_profile_owner = Post::showPostsFor(User::findUserByUsername($_SESSION['username']));
             
-            $all_comments_per_post = Comment::showCommentsForGroup($all_posts);
+            $all_comments_per_post = Comment::showCommentsForGroup($posts_of_profile_owner);
 
             $all_users = User::showAllUsers();
             $all_users = $all_users == false ? [] : $all_users;
@@ -105,7 +105,7 @@
             $f_unf = User::f_unf($id);
 
             new view('auth' . DIRECTORY_SEPARATOR . 'profile', ['id_visited'=>[$id, $f_unf], 
-            'all_posts' => $all_posts, 
+            'posts_of_profile_owner' => $posts_of_profile_owner, 
             'all_comments_per_post' => $all_comments_per_post, 'all_users' => $all_users]);
         }
 

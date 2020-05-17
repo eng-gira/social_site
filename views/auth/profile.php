@@ -1,25 +1,9 @@
-<?php
+<?php include('C:\xampp\htdocs\social_site\inc\navbar.php');?>
 
-  //  echo $_SESSION['username'] . "<- from sessions. <br>";*/
-    
-
-?>
 <html>
     <head></head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="/social_site/public/home"> Home </a>
-            <a class="navbar-brand" href="/social_site/public/home/about"> About </a>
-            
-            <div class="container justify-content-md-end">            
-                <a class="navbar-brand" href="/social_site/public/auth/dashboard"> <?php echo $_SESSION['username']; ?> </a>
-                <a class="navbar-brand" href="/social_site/public/auth/logOut"> Log Out </a>
-            </div>
-        </nav> <br><br><br>
         <main>
-            
-
-
             <?php
             
                 $id_visited= $this->getData()['id_visited'][0];
@@ -32,17 +16,8 @@
                     </p>
                     <?php
                 }
-                else {
-                    ?>
-                    <h4> New Post </h4><br><br>
-                    <form action="/social_site/public/post/newPost" method="POST">
-                        Post Title: <input type="text" name="post_title" required/> <br><br>
-                        Post Body: <input name="post_body" style="height:200px;width:200px" required/> <br><br>
-                        <button type="submit"> Submit Post </button>
-                    </form><br><hr><br>
-                    <?php
-                }
-                $arr_my_posts = $this->getData()['all_posts'];
+
+                $arr_my_posts = $this->getData()['posts_of_profile_owner'];
                 $arr_comments = $this->getData()['all_comments_per_post'];
                 $arr_all_users = $this->getData()['all_users'];
 
@@ -55,7 +30,7 @@
                         $current_id = $arr_all_users[$i]['id'];
                        ?>
                              <a style='display:inline-block' href=<?php 
-                            echo '/social_site/public/auth/dashboard/'.$current_id; 
+                            echo '/social_site/public/auth/profile/'.$current_id; 
                         ?>
                              >  
                              <?php 
@@ -65,6 +40,7 @@
                          <?php
                     }
                 }
+                echo '<br><br><hr><br><br>';
 
                 if(count($arr_my_posts)>0)
                 {
@@ -80,7 +56,7 @@
                     echo "<h5>". $arr_my_posts[$i]['title'] . "</h5>";
                     echo "<h6>". $arr_my_posts[$i]['body'] . "</h6>";
                     echo "<hr>";
-                    $delete_link = "/social_site/public/post/deletePost/" . $arr_my_posts[$i]['id'];
+                    $delete_link = "/social_site/public/post/delet_post/" . $arr_my_posts[$i]['id'];
                     
                     $current_post_id = $arr_my_posts[$i]['id'];
                     
@@ -96,7 +72,7 @@
                     $upvoted= in_array($_SESSION['id'], $up_voters);
                     $downvoted = in_array($_SESSION['id'], $down_voters);
                     ?>
-                    <a href=<?php echo "/social_site/public/post/editPost/" . $arr_my_posts[$i]['id']; ?>> Edit </a> | 
+                    <a href=<?php echo "/social_site/public/post/edit/" . $arr_my_posts[$i]['id']; ?>> Edit </a> | 
                     <button onclick='confirmPostDeletion("<?php echo $delete_link; ?>")')>Delete</button>
                     
                     <p id=<?php echo 'upvote_post_'.$current_post_id;?> style='cursor:pointer;width:50px' 
@@ -127,7 +103,7 @@
                                 ?>
                                 <h6> 
                                     <a href=
-                                    <?php echo '/social_site/public/comment/editComment/'.
+                                    <?php echo '/social_site/public/comment/edit/'.
                                     $arr_comments[$current_post_id][$j]['id'];?>
                                     >Edit</a> or 
                                     <p style='cursor:pointer;' onclick=
@@ -192,122 +168,3 @@
         </main>
     </body>
 </html>
-<script>
-    function confirmPostDeletion(link)
-    {
-        let r = confirm("Confirm Post DELETION");
-        if (r == true) {
-            let xhttp = new XMLHttpRequest;
-
-            xhttp.open("POST", link, true);
-            xhttp.send();
-            location.reload();
-        }
-    }
-
-    function comment(post_id)
-    {
-        let comment_body = document.getElementById('comment_body_post_'+post_id).value;
-
-        if(comment_body.length<1) {alert("empty comment"); return false;}
-
-        let xhttp = new XMLHttpRequest;
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                let holder = document.getElementById("all_comments_for_"+post_id).innerHTML;
-                let new_comment = xhttp.responseText;
-
-                document.getElementById("all_comments_for_"+post_id).innerHTML = new_comment + holder;
-            }
-        };
-        xhttp.open("POST","/social_site/public/comment/newComment", true);
-        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhttp.send("comment_body="+comment_body+"&post_id="+post_id);
-    }
-
-    function deleteComment(post_id, comment_id)
-    {
-        if(comment_id < 0 || post_id < 0) return false;
-
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) 
-            {
-                document.getElementById("all_comments_for_"+post_id).innerHTML = xhttp.responseText;
-            }
-        };
-        xhttp.open("GET", "/social_site/public/comment/deleteComment/"+post_id+"/"+comment_id, true);
-        xhttp.send();
-    }
-
-    function upvote_post(post_id)
-    {
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) 
-            {
-                document.getElementById('upvote_post_'+post_id).innerHTML = xhttp.responseText;
-                document.getElementById('downvote_post_'+post_id).innerHTML = "downvote";
-
-            }
-        };
-        xhttp.open("GET", "/social_site/public/post/upvote"+"/"+post_id, true);
-        xhttp.send();
-    }
-
-    function downvote_post(post_id)
-    {
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) 
-            {
-                document.getElementById('downvote_post_'+post_id).innerHTML = xhttp.responseText;
-                document.getElementById('upvote_post_'+post_id).innerHTML = "upvote";
-            }
-        };
-        xhttp.open("GET", "/social_site/public/post/downvote"+"/"+post_id, true);
-        xhttp.send();
-    }
-
-    function upvote(comment_id)
-    {
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) 
-            {
-                document.getElementById('upvote_'+comment_id).innerHTML = xhttp.responseText;
-            }
-        };
-        xhttp.open("GET", "/social_site/public/comment/upvote"+"/"+comment_id, true);
-        xhttp.send();
-    }
-
-    function downvote(comment_id)
-    {
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) 
-            {
-                document.getElementById('downvote_'+comment_id).innerHTML = xhttp.responseText;
-            }
-        };
-        xhttp.open("GET", "/social_site/public/comment/downvote"+"/"+comment_id, true);
-        xhttp.send();
-    }
-
-    function follow(to_follow)
-    {
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange= function()
-        {
-            if(this.readyState==4 && this.status==200)
-            {
-                document.getElementById("follow_btn").innerHTML = xhttp.responseText;
-            }
-        };
-
-        xhttp.open("GET", "/social_site/public/auth/follow/"+to_follow, true);
-        xhttp.send();
-    }
-
-</script>

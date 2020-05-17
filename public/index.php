@@ -23,7 +23,8 @@
     spl_autoload_register('spl_autoload', false);
 ?>
     <link rel="stylesheet" href="\social_site\inc\css\bootstrap.css">
-    <!-- <link rel="stylesheet" href="\social_site\inc\css\ekom_custom.css"> -->
+    <link rel="stylesheet" href="\social_site\inc\css\ekom_custom.css">
+    <script src="\social_site\inc\js\social_site_functions.js"></script>
 <?php
-    new Application;
+    new Application;    
 ?>

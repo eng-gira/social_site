@@ -118,5 +118,21 @@
             echo 'downvote';
         }
        
+        public function show($id=-1)
+        {
+            if(!isset($_SESSION['username'])) self::goHome();
+            if($id<0) self::goProfile();
+
+            $post=Post::getPostOfId($id);
+
+            if(isset($post))
+            {
+                $comments = Comment::showCommentsForPost($id);
+
+                new View ('post' . DIRECTORY_SEPARATOR . 'show_post', ['post'=>$post, 
+                'comments'=>$comments]);
+            }
+
+        }
     }
 ?>

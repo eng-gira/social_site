@@ -59,6 +59,8 @@
                     $post['title']=$row['title'];
                     $post['body']=$row['body'];
                     $post['author']=$row['author'];
+                    $post['up_voters']=$row['up_voters'];
+                    $post['down_voters']=$row['down_voters'];
                 }
             }else {return false;}
 
@@ -217,8 +219,8 @@
         {
             $myCon = self::connect();
 
-            $sql_get_all_posts = 'SELECT posts.id, posts.title, posts.body, posts.up_voters, 
-            posts.down_voters, users.username FROM users INNER JOIN posts ON posts.author=users.id ORDER BY 
+            $sql_get_all_posts = 'SELECT users.username, posts.id, posts.title, posts.body, posts.up_voters, 
+            posts.down_voters FROM posts INNER JOIN users ON users.id=posts.author ORDER BY 
             posts.id DESC';
 
             $result = $myCon->query($sql_get_all_posts);

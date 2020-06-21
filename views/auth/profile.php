@@ -51,12 +51,12 @@
                 for($i=0; $i<count($arr_my_posts); $i++)
                 {
                     ?>
-                    <div class='post'>
+                <div class='post'>
                     <?php
                     echo "<h5>". $arr_my_posts[$i]['title'] . "</h5>";
                     echo "<h6>". $arr_my_posts[$i]['body'] . "</h6>";
                     echo "<hr>";
-                    $delete_link = "/social_site/public/post/delet_post/" . $arr_my_posts[$i]['id'];
+                    $delete_link = "/social_site/public/post/delete_post/" . $arr_my_posts[$i]['id'];
                     
                     $current_post_id = $arr_my_posts[$i]['id'];
                     
@@ -161,7 +161,7 @@
                         ?>
                     </div>
                     <hr>
-                    </div>
+                </div>
                     <?php
                 }
             ?>

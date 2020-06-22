@@ -1,6 +1,11 @@
+body
+{
+    margin-left:10px;
+}
+
 .post
 {
-    background-color: #df9800;
+    background-color: #f6f6f8;
 }
 
 .post_title
@@ -11,6 +16,24 @@
 
 .post_body
 {
-    font-weight: lighter !important;
-    font-size: 13px !important;
+    font-weight: normal !important;
+    font-size: 16px !important;
+}
+
+.vote_on_post
+{
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.edit_post_link
+{
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.del_post_btn
+{
+    width: auto;
+    height: auto;
 }

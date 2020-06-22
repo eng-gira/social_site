@@ -1,3 +1,6 @@
+<?php include('C:\xampp\htdocs\social_site\inc\navbar.php'); ?>
+
+
 <?php
     $post = $this->getData()['post'];
     $comments=$this->getData()['comments'];
@@ -5,8 +8,8 @@
 
 <div class='post'>
     <?php
-    echo "<h5>". $post['title'] . "</h5>";
-    echo "<h6>". $post['body'] . "</h6>";
+    echo "<div class='post_title'>". $post['title'] . "</div>";
+    echo "<div class='post_body'>". $post['body'] . "</div>";
     echo "<hr>";
     $delete_link = "/social_site/public/post/delete_post/" . $post['id'];
     

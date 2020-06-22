@@ -42,7 +42,8 @@
                 return false;
             }
             
-            new View('auth' . DIRECTORY_SEPARATOR . 'editPost', array('post_id'=>$id));
+            new View('post' . DIRECTORY_SEPARATOR. 'edit_post', 
+                array('post_id'=>$id));
             
         }
 
@@ -120,7 +121,6 @@
        
         public function show($id=-1)
         {
-            if(!isset($_SESSION['username'])) self::goHome();
             if($id<0) self::goProfile();
 
             $post=Post::getPostOfId($id);

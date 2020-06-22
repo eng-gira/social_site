@@ -206,7 +206,7 @@
                     echo "FAILED TO EXECUTE 2<br>"; return false;
                 }
 
-                echo self::removeOtherVote($id, 'upvote');
+                self::removeOtherVote($id, 'upvote');
 
             }else {echo "FAILED TO PREPARE 2<br>"; return false;}
 
@@ -266,7 +266,7 @@
                     echo "FAILED TO EXECUTE 2<br>"; return false;
                 }
 
-                echo self::removeOtherVote($id, 'downvote');
+                self::removeOtherVote($id, 'downvote');
 
             }else {echo "FAILED TO PREPARE 2<br>"; return false;}
 

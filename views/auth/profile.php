@@ -53,8 +53,8 @@
                     ?>
                 <div class='post'>
                     <?php
-                    echo "<h5>". $arr_my_posts[$i]['title'] . "</h5>";
-                    echo "<h6>". $arr_my_posts[$i]['body'] . "</h6>";
+                    echo "<div class='post_title'>". $arr_my_posts[$i]['title'] . "</div>";
+                    echo "<div class='post_body'>". $arr_my_posts[$i]['body'] . "</div>";
                     echo "<hr>";
                     $delete_link = "/social_site/public/post/delete_post/" . $arr_my_posts[$i]['id'];
                     
@@ -72,18 +72,15 @@
                     $upvoted= in_array($_SESSION['id'], $up_voters);
                     $downvoted = in_array($_SESSION['id'], $down_voters);
                     ?>
-                    <a href=<?php echo "/social_site/public/post/edit/" . $arr_my_posts[$i]['id']; ?>> Edit </a> | 
-                    <button onclick='confirmPostDeletion("<?php echo $delete_link; ?>")')>Delete</button>
-                    
-                    <p id=<?php echo 'upvote_post_'.$current_post_id;?> style='cursor:pointer;width:50px' 
+                    <a class="edit_post_link" href=<?php echo "/social_site/public/post/edit/" . $arr_my_posts[$i]['id']; ?>> Edit </a> | 
+                    <button style="margin-left:10px;" class="del_post_btn" onclick='confirmPostDeletion("<?php echo $delete_link; ?>")')>Delete</button>
+                    <br>
+                    <p class="vote_on_post" id=<?php echo 'upvote_post_'.$current_post_id;?> style='cursor:pointer;width:50px;display:inline-block;' 
                         onclick='<?php echo $upvote_post_js_func; ?>'><?php echo $upvoted?'upvoted':'upvote'; ?> </p>
-                    <p id=<?php echo 'downvote_post_'.$current_post_id;?> style='cursor:pointer;width:50px' 
+                    <p class="vote_on_post" id=<?php echo 'downvote_post_'.$current_post_id;?> style='cursor:pointer;width:50px;display:inline-block;margin-left:10px' 
                         onclick='<?php echo $downvote_post_js_func; ?>'><?php echo $downvoted?'downvoted':'downvote'; ?></p>
-                    
-                    <?php
-                    echo "<hr>";
-                    ?>
-                    
+                    <br>
+                
                     <input type="text" id=<?php echo "comment_body_post_".$current_post_id;?> name="comment_body"/>
                     <button type="submit" onclick="comment(<?php echo $current_post_id; ?>)">Comment</button>
                     

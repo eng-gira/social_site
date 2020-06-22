@@ -81,6 +81,7 @@ function confirmPostDeletion(link)
             if (this.readyState == 4 && this.status == 200) 
             {
                 document.getElementById('upvote_'+comment_id).innerHTML = xhttp.responseText;
+                document.getElementById('downvote_'+comment_id).innerHTML= "downvote";
             }
         };
         xhttp.open("GET", "/social_site/public/comment/upvote"+"/"+comment_id, true);
@@ -94,6 +95,7 @@ function confirmPostDeletion(link)
             if (this.readyState == 4 && this.status == 200) 
             {
                 document.getElementById('downvote_'+comment_id).innerHTML = xhttp.responseText;
+                document.getElementById('upvote_'+comment_id).innerHTML= "upvote";
             }
         };
         xhttp.open("GET", "/social_site/public/comment/downvote"+"/"+comment_id, true);

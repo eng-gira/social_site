@@ -29,16 +29,16 @@
             $password= md5($_POST['pw']);
             
             //check if username and/or email already exist
-            if(User::findUserByEmail($email) || User::findUserByUsername($username) > -1)
+            if(User::getUserByEmail($email) || User::getUserByUsername($username)['id'] > -1)
             {                
-                if(User::findUserByUsername($username) == -1)
+                if(User::getUserByUsername($username)['id'] == -1)
                 {
                     $err_em=md5("err_em"); //basic encryption
                     header("Location: reg/".$err_em);
 
                     return false; //safety
                 }
-                else if(!User::findUserByEmail($email))
+                else if(!User::getUserByEmail($email))
                 {
                     $err_unm=md5("err_unm"); //basic encryption
                     header("Location: reg/".$err_unm);
@@ -56,9 +56,13 @@
             if(User::newUser($username, $email, $password))
             {
                 $_SESSION['username']= $username;
-                $_SESSION['id']=intval(User::findUserByUsername($username));
+                $_SESSION['id']=User::getUserByUsername($username)['id'];
+                $_SESSION['message']=array();
+                $_SESSION['count_times_message_shown']=0;
                 
                 self::goProfile();
+
+                return true;
             }
 
             return "Failed";
@@ -72,7 +76,9 @@
             if(User::auth($username, $password))
             {
                 $_SESSION['username']=$username;
-                $_SESSION['id']=intval(User::findUserByUsername($username));
+                $_SESSION['id']=User::getUserByUsername($username)['id'];
+                $_SESSION['message']=array();
+                $_SESSION['count_times_message_shown']=0;
 
                 echo "AUTHENTICATED!! <br>";
 
@@ -95,7 +101,9 @@
             if($id==-1) $id=$_SESSION['id'];
             
             //show all posts by the authenticated
-            $posts_of_profile_owner = Post::showPostsFor(User::findUserByUsername($_SESSION['username']));
+            $posts_of_profile_owner = Post::showPostsFor($id);
+
+            $visited_data = User::getUserById($id);
             
             $all_comments_per_post = Comment::showCommentsForGroup($posts_of_profile_owner);
 
@@ -104,7 +112,8 @@
 
             $f_unf = User::f_unf($id);
 
-            new view('auth' . DIRECTORY_SEPARATOR . 'profile', ['id_visited'=>[$id, $f_unf], 
+            new view('auth' . DIRECTORY_SEPARATOR . 'profile', ['visited_data'=>$visited_data, 
+            'f_unf'=>$f_unf,  
             'posts_of_profile_owner' => $posts_of_profile_owner, 
             'all_comments_per_post' => $all_comments_per_post, 'all_users' => $all_users]);
         }
@@ -115,6 +124,8 @@
             {
                 unset($_SESSION['username']);
                 unset($_SESSION['id']);
+                unset($_SESSION['messages']);
+                unset($_SESSION['count_times_message_shown']);
 
                 session_destroy();
 

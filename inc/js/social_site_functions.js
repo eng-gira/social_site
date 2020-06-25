@@ -30,19 +30,16 @@ function confirmPostDeletion(link)
         xhttp.send("comment_body="+comment_body+"&post_id="+post_id);
     }
 
-    function deleteComment(post_id, comment_id)
+    function deleteComment(comment_id)
     {
-        if(comment_id < 0 || post_id < 0) return false;
+        if(comment_id < 0) return false;
 
         let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) 
-            {
-                document.getElementById("all_comments_for_"+post_id).innerHTML = xhttp.responseText;
-            }
-        };
-        xhttp.open("GET", "/social_site/public/comment/deleteComment/"+post_id+"/"+comment_id, true);
+
+        xhttp.open("POST", "/social_site/public/comment/deleteComment/"+comment_id, true);
         xhttp.send();
+
+        location.reload();
     }
 
     function upvote_post(post_id)

@@ -3,21 +3,16 @@ body
     margin-left:10px;
 }
 
-.post
-{
-    background-color: #f6f6f8;
-}
-
 .post_title
 {
     font-weight: bold !important;
-    font-size: 25px !important;
+    font-size: 23px !important;
 }
 
 .post_body
 {
     font-weight: normal !important;
-    font-size: 16px !important;
+    font-size: 14px !important;
 }
 
 .vote_on_post
@@ -36,4 +31,15 @@ body
 {
     width: auto;
     height: auto;
+}
+
+.comment_div
+{
+    background-color: #f6f6f8;
+}
+
+.comment, .comment_options
+{
+
+    font-size: 12px;
 }

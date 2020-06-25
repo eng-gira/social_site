@@ -14,15 +14,47 @@
 
             if($post < 0 || strlen($body)<1)
             {
+                $_SESSION['message']=array('error', 'Missing field(s)');
                 self::goHome();
             }
 
-            if(Comment::newComment($body, User::findUserByUsername($_SESSION['username']), $post))
+            $comment_author = User::getUserByUsername($_SESSION['username']);
+            $id = Comment::newComment($body, $comment_author['id'], $post);
+
+            if($id>-1)
             {
-                echo $body."<br>";
+
+                echo '<div>
+                <h5 class="comment" style="display:inline-block;">' . $comment_author['username'] .':&nbsp</h5>'
+                .
+                
+                '<h5 class="comment" style="display:inline-block;">' . $body. '</h5>
+                </div>'
+                
+                .
+                
+                '<h6 class="comment_options d-inline-block"> 
+                        <a class="d-inline-block" href="/social_site/public/comment/editComment/'. $id . '">Edit</a> |  
+                        <p class="d-inline-block" style="cursor:pointer;" onclick="deleteComment('. $id.')">
+                        Delete </p>
+                        | 
+                </h6>'
+            
+                .
+                
+                '<h6 class="comment_options d-inline-block" id="upvote_'.$id.'" onclick="upvote('.$id.')" style="cursor:pointer"> upvote</h6> |'
+                
+                .
+
+                '<h6 class="comment_options d-inline-block" id="downvote_'.$id.'" onclick="downvote('.$id.')" style="cursor:pointer"> downvote </h6>'
+                
+                .
+
+                '<br>';
+
                 return true;
             }
-
+            
             self::goProfile();
         }
 
@@ -31,7 +63,19 @@
             if(!isset($_SESSION['username'])) self::goHome();
             if($id<0) self::goProfile();
 
-            new View('auth' . DIRECTORY_SEPARATOR . 'editComment', ['comment_id' => $id]);
+            $comment = Comment::findCommentById($id);
+            $original_comment_body='';
+            if(is_array($comment))
+            {
+                $original_comment_body = $comment['body'];
+
+                new View('comment' . DIRECTORY_SEPARATOR . 'editComment', ['comment_id' => $id, 
+                'original_comment_body'=>$original_comment_body]);
+
+                return;
+            }
+            
+            echo "CouldNOT get comment";
         }
 
         public function updateComment($id=-1)
@@ -47,32 +91,39 @@
             
             if(!Comment::updateComment($id, $new_comment_body))
             {
-                echo 'Error<br>';
+                $_SESSION['message']=array('error', 'Could not update comment');
+                $_SESSION['count_times_message_shown']=0;
+
+                self::goProfile();
+
+                return;
             }
+
+            $_SESSION['message']=array('success', 'Comment updated');
+            $_SESSION['count_times_message_shown']=0;
 
             self::goProfile();
         }
 
-        public function deleteComment($post_id = -1, $comment_id=-1)
+        public function deleteComment($comment_id)
         {
             if(!isset($_SESSION['username'])) self::goHome();
-            if($post_id< 0 || $comment_id <0) self::goProfile();
+            
 
             Comment::deleteComment($comment_id);
 
-            $arr_comments = Comment::showCommentsForPost($post_id);
+            // $arr_comments = Comment::showCommentsForPost($post_id);
 
-            $comments = '';
-            if(!is_array($arr_comments)) return $comments;
+            // $comments = '';
+            // if(!is_array($arr_comments)) return $comments;
 
-            for($i=0;$i<count($arr_comments);$i++)
-            {
-                $comments .= $arr_comments[$i]['body'];
-                $comments .='<br>';
-            }
+            // for($i=0;$i<count($arr_comments);$i++)
+            // {
+            //     $comments .= $arr_comments[$i]['body'];
+            //     $comments .='<br>';
+            // }
             
-            echo $comments;
-            return;
+            // echo $comments;
         }
 
         public function upvote($id=-1)

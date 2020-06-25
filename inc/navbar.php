@@ -4,6 +4,11 @@
     <a class="navbar-brand" href="/social_site/public/"> Home </a>
     <a class="navbar-brand" href="/social_site/public/pages/about"> About </a>
     <a class="navbar-brand" href="/social_site/public/auth/profile"> Profile </a>
+    <form action="/social_site/public/post/search" method="POST" class="navbar-brand form-inline my-2 my-lg-0">
+            <input name="search" class="form-control mr-sm-2" type="text" placeholder="Search Posts" aria-label="Search"/>
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
     <?php 
     if(isset($_SESSION['username']))
     {

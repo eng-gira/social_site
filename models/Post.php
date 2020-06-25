@@ -246,6 +246,42 @@
                 return 'Couldnt get results.';
             }
         }
+
+        public static function search($search)
+        {
+            $myCon=self::connect();
+
+            $sql = "SELECT * FROM posts WHERE title LIKE ? OR body LIKE ?";
+
+            $posts = array();
+
+            if($stmt=$myCon->prepare($sql))
+            {
+                $search_for = '%' . $search . '%';
+
+                $stmt->bind_param('ss', $search_for, $search_for);
+
+                if($stmt->execute())
+                {
+                    $stmt->store_result();
+                 
+                    if($stmt->num_rows != 0) {
+
+                        $stmt->bind_result($id, $title, $body, $author, $up_voters, $down_voters);
+
+                        while($stmt->fetch())
+                        {
+                            $posts[count($posts)] = ['id'=>$id, 'title'=>$title, 
+                            'body'=>$body, 'author'=>$author, 'up_voters'=>
+                            $up_voters, 'down_voters'=>$down_voters];
+                            
+                        }
+                    }
+                }
+            }
+
+            return $posts;
+        }
     }
 
 ?>

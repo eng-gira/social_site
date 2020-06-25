@@ -19,7 +19,7 @@
             return $ret;
         }
         
-        public static function findUserByEmail($email)
+        public static function getUserByEmail($email)
         {
             $myCon=self::connect();
 
@@ -41,43 +41,84 @@
 
             return false;
         }
-
-        /*
-            @return id or -1;
-        */
-        public static function findUserByUsername($username)
+        
+        public static function getUserById($id)
         {
             $myCon = self::connect();
 
-            $sql = "SELECT id FROM users WHERE username = ?";
+            $sql = "SELECT id, username, email, followers FROM users WHERE id = ?";
 
             if($stmt=$myCon->prepare($sql))
             {
               //  echo "inside... <br>";
+                $stmt->bind_param("i", $id);
+                if($stmt->execute())
+                {
+                    $stmt->store_result();
+                 
+                    if($stmt->num_rows != 0) {
+                        // $id=-1;
+                        // $username='';
+                        // $email='';
+                        // $followers='';
+                        $stmt->bind_result($id, $username, $email, $followers); 
+
+                        $stmt->fetch();
+
+                        return ['id'=>$id, 'username'=>$username, 'email'=>$email, 'followers'=>$followers];
+                    }
+                }
+                else 
+                {
+                    echo "id doesn't exist<br>";
+                }
+            }    
+            else 
+            {
+                echo "Couldn't execute method: getUserById<br>"; 
+            }
+
+            return -1;
+        }
+        
+        public static function getUserByUsername($username)
+        {
+            $myCon = self::connect();
+
+            $sql = "SELECT id, username, email, followers FROM users WHERE username = ?";
+
+            if($stmt=$myCon->prepare($sql))
+            {
                 $stmt->bind_param("s", $username);
                 if($stmt->execute())
                 {
-                   // echo "executed...<br>";
                     $stmt->store_result();
+                 
                     if($stmt->num_rows != 0) {
-                        $stmt->bind_result($id); 
-                        while ($stmt->fetch()) {
-                           // echo "username exists with id: ". $id . "<br>";
-                            $stmt->close();
-                            return $id;
-                        }
+                        
+                        $stmt->bind_result($id, $username, $email, $followers); 
+
+                        $stmt->fetch();
+
+                        return ['id'=>$id, 'username'=>$username, 'email'=>$email, 'followers'=>$followers];
                     }
                 }
-                else {echo "Couldn't execute method: findUserByUsername<br>"; $stmt->close(); return -1;}
+                else 
+                {
+                    echo "username doesn't exist<br>";
+                }
+            }    
+            else 
+            {
+                echo "Couldn't execute method: getUserByUsername<br>"; 
             }
-           echo "username doesn't exist<br>";
-            $stmt->close();
+
             return -1;
         }
 
         public static function auth($username, $pw)
         {
-            $id = self::findUserByUsername($username);
+            $id = self::getUserByUsername($username)['id'];
             if($id > -1)
             {
                 $myCon = self::connect();

@@ -2,31 +2,60 @@
 
     class Comment extends DB
     {
+        /**
+         * @method newComment($body, $author, $post)
+         *
+         * @param string (body): comment body
+         * @param int (author): author's id
+         * @param int (post) post's id
+         * 
+         * @return int: new comment is added? the comment's id. Otherwise, -1;
+         */
         public static function newComment($body, $author, $post)
         {
             $myCon = self::connect();
-            $sql = "INSERT INTO comments (body, author, post, up_voters, down_voters) VALUES (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO comments (body, author, post, up_voters, down_voters, date_time) VALUES (?, ?, ?, ?, ?, ?)";
 
             if($stmt=$myCon->prepare($sql))
             {
                 // echo 'prepared = true <br>'; //debug
                 $empty_string='';
-                $stmt->bind_param("siiss", $body, $author, $post, $empty_string, $empty_string);
+                $date_time = date('y').date('m').date('d').'_'.date('H').date('i').date('s');
+                $stmt->bind_param("siisss", $body, $author, $post, $empty_string, $empty_string, $date_time);
 
                 if(!$stmt->execute())
                 {
                     //echo 'couldn't execute <br>'; //debug
-                    return false;
+                    return -1;
                 }
             }
             else
             {
                 //echo 'couldn't prepare <br>'; //debug
-                return false;
+                return -1;
             }
 
-            //echo 'neat <br>';
-            return true;
+            //returning this comment's id;
+            $ret_id = -1;
+
+            $select_sql = 'SELECT id FROM comments WHERE author = ? AND date_time = "' . 
+                $date_time . '"';
+
+            if($stmt2=$myCon->prepare($select_sql))
+            {
+                $stmt2->bind_param('i', $author);
+
+                if($stmt2->execute())
+                {
+                    $stmt2->store_result();
+                    if($stmt2->num_rows != 0) {
+                        $stmt2->bind_result($ret_id); 
+                        
+                        $stmt2->fetch(); 
+                    }
+                }
+            }
+            return $ret_id;
         }
 
         public static function showCommentsForPost($post_id)
@@ -43,7 +72,8 @@
                 while($row=$result->fetch_assoc())
                 {
                     $comments[count($comments)] = array(
-                        'id'=>$row['id'], 'body'=>$row['body'], 'author'=>$row['author'], 'post'=>$row['post'],
+                        'id'=>$row['id'], 'body'=>$row['body'], 'author'=>User::getUserById($row['author'])
+                        , 'post'=>$row['post'],
                         'up_voters'=>$row['up_voters'], 'down_voters'=>$row['down_voters']
                     );
                 }
@@ -77,7 +107,7 @@
                     {
                         
                         $arr[count($arr)]=array('id'=>$row['id'], 'body' => $row['body'], 
-                        'author' => $row['author'], 'up_voters' => $row['up_voters'], 
+                        'author' => User::getUserById($row['author']), 'up_voters' => $row['up_voters'], 
                         'down_voters' => $row['down_voters']);
                         
                         /*
@@ -134,24 +164,34 @@
         @returns Comment id or -1;
         */
         public static function findCommentById($id)
-        {
-            if(!is_int($id)) return -1;
-            
+        {            
             $myCon = self::connect();
             
-            $sql = "SELECT id FROM comments WHERE id = $id";
+            $sql = "SELECT id, body FROM comments WHERE id = ?";
             
-            $result = $myCon->query($sql);
-            
-            if($result->num_rows!=0) 
+            if($stmt=$myCon->prepare($sql))
             {
-                while($row=$result->fetch_assoc())
+                $stmt->bind_param('i', $id);
+
+                if($stmt->execute())
                 {
-                    return inval($row['id']);
+                    $stmt->store_result();
+
+                    $comment_id = -1;
+                    $comment_body = '';
+                    
+                    if($stmt->num_rows!=0)
+                    {
+                        $stmt->bind_result($comment_id, $comment_body); 
+                        
+                        $stmt->fetch();
+                    }
+                    
+                    return ['id'=>$comment_id, 'body'=>$comment_body];
                 }
             }
-            
-            return -1;
+
+            return -2;
         }
         
         public static function upvote($id)

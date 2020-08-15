@@ -11,9 +11,6 @@
     define ('WWW', 'localhost/ekom/');
     define ('_PUBLIC', WWW . 'public/');
 
-    // echo dirname(__DIR__); -> C:\xampp\htdocs\ekom_proj
-//    echo "index.php here!<br>";
-
     //setting include-paths for the autoloader
     $modules = [ROOT, CORE, MODEL, CONTROLLER, DATA];
     set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, $modules));

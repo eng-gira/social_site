@@ -129,7 +129,7 @@
         public function upvote($id=-1)
         {
             if(!isset($_SESSION['username'])) self::goHome();
-            if($id<0) self::goDashboard();
+            if($id<0) self::goProfile();
 
             if(Comment::upvote($id))
             {
@@ -142,7 +142,7 @@
         public function downvote($id=-1)
         {
             if(!isset($_SESSION['username'])) self::goHome();
-            if($id<0) self::goDashboard();
+            if($id<0) self::goProfile();
 
             if(Comment::downvote($id))
             {
